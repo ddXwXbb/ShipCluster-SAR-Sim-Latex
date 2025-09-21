@@ -1,10 +1,21 @@
-\documentclass[12pt,a4paper]{article}
+% !TeX program = xelatex
+
+\documentclass[12pt,a4paper]{ctexart}
 
 % 中文支援套件
+\usepackage{ctex}
 \usepackage[UTF8,scheme=chinese]{ctex}
 \usepackage{xeCJK}
+\setCJKmainfont{標楷體}
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt 
 
+\defaultCJKfontfeatures{AutoFakeBold=6,AutoFakeSlant=.4}
+\newCJKfontfamily\Kai{標楷體}
+\newCJKfontfamily\Hei{微軟正黑體} 
+\newCJKfontfamily\NewMing{新細明體} 
 % 繁體中文設定
+
 \ctexset{
     contentsname={目錄},
     listfigurename={圖目錄},
@@ -45,9 +56,29 @@
 \date{\today}
 
 \begin{document}
+\begin{titlepage}
 
-% 標題頁
-\maketitle
+	\centering
+	\vspace*{2cm}
+	
+	{\Large 國立臺灣海洋大學\\[0.5cm]資訊工程系專題報告 \par}
+	
+	\vspace*{1cm}
+	{\Huge 船舶群集搜救模擬系統 \par}
+	
+	\vfill
+	
+	{\Large 指導教授：鄭錫齊 教授 \par}
+	\vspace*{1cm}
+	\begin{tabular}{lll}
+	學號 & 姓名 & E-mail \\
+	\hline
+	\end{tabular}
+
+	\vspace*{1cm}
+	{\Large 中華民國\ 114 年\ 9 月\ 21 日 \par}
+
+\end{titlepage}
 
 % 摘要
 \begin{abstract}
@@ -255,13 +286,298 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
 
 
 \section{相關使用技術介紹}
-% 請在此處添加系統設計內容
+\subsection{深度強化學習核心演算法 — Soft Actor-Critic (SAC)}
+Soft Actor-Critic (SAC) 是一種基於最大熵強化學習（maximum entropy RL）的演算法，其核心思想是在策略學習過程中同時最大化期望回報與策略熵。換言之，SAC 不僅追求高獎勵，也鼓勵策略在決策時保持隨機性，以提升探索能力與穩定性。透過在目標函數中引入熵正則項，SAC 能在「利用高獎勵行為」與「保留行為多樣性」之間取得平衡，最終使得代理人在不確定或動態環境中能學習到更穩定且具泛化性的策略。
+\\ \par
+SAC 建立在 actor-critic 架構 上：
+\begin{enumerate}
+	\item \textbf{Actor（策略網路）}：輸出參數化的隨機策略，通常以高斯分布建模，並透過重參數化技巧進行動作取樣，使策略更新可微分。
+	\item \textbf{Critic（價值網路）}：使用兩個 Q 函數（twin Q-networks）以降低過度估計偏差，透過軟化的貝爾曼方程（soft Bellman backup）學習回報與熵加權後的價值。
+	\item \textbf{熵正則項}：在目標函數中加入策略熵，使代理人不僅追求獎勵最大化，也保持行為的隨機性，以鼓勵探索並避免過早收斂。
+	\item \textbf{自動調整溫度參數}：SAC 可動態調整溫度係數 α，自適應地平衡「利用」與「探索」，避免需要手動調參。
+\end{enumerate}
+
+SAC 演算法有以下優點：
+\begin{itemize}
+	\item \textbf{穩定的訓練過程}：SAC 採用經驗回放，在每次更新時只隨機抽取一小部分過往經驗來訓練，而不是僅依賴即時資料。這樣能打破資料間的相關性，降低方差，使訓練過程更平滑與穩定。
+	\item \textbf{避免過度收斂，提升探索性}：SAC 在目標函數中引入「熵」正則項，鼓勵策略在學習過程中保持隨機性，避免過早收斂到次佳解。
+	\item \textbf{偏差控制與高效學習}：使用 double Q-networks 減少了價值高估問題。
+	\item \textbf{自動化探索 - 利用平衡}：SAC 允許自動調整溫度參數 α，動態平衡「追求回報」與「保持隨機性」，減少對超參數的敏感度。
+\end{itemize}
+
+\subsection{Unity3D 開發引擎}
+
+Unity3D（以下簡稱 Unity）是一款跨平台的即時 3D 開發引擎，廣泛應用於遊戲開發、虛擬實境（VR）、擴增實境（AR）、模擬器以及互動式應用。Unity 的核心特點包括：
+
+\begin{itemize}
+    \item \textbf{跨平台支援}：開發者可以一次編寫程式碼，將應用部署到 Windows、MacOS、iOS、Android、WebGL、PlayStation、Xbox 等多種平台。
+    \item \textbf{可視化編輯器}：提供直觀的場景設計與資源管理介面，方便開發者進行場景佈置、動畫製作與物理模擬。
+    \item \textbf{C\# 腳本語言}：使用 C\# 編寫遊戲邏輯與互動行為，並支持與外部系統進行資料交換。
+    \item \textbf{豐富的資源與插件}：Unity 提供官方資源商店（Asset Store），開發者可快速取得模型、材質、插件及範例專案，加速開發流程。
+\end{itemize}
+
+由於 Unity 支援物理模擬、碰撞檢測、光影渲染以及高自由度場景控制，因此除了遊戲開發，Unity 也被廣泛應用於機器人模擬、數位孿生、教育訓練與科研領域。
+
+
+
+\subsection{ML-Agents}
+ML-Agents（Unity Machine Learning Agents Toolkit）是 Unity 官方推出的開源工具套件，主要用於將 Unity 環境轉化為可供智能體訓練的模擬環境。其主要功能是讓開發者在 Unity 中建立智能體（Agent）並進行機器學習或強化學習的訓練。
+\\ \par
+ML-Agents 的核心特點包括：
+
+\begin{itemize}
+	\item \textbf{智能體與環境建模}：在 Unity 場景中建立智能體，定義其觀察、可執行動作以及獎勵函數。
+	
+	\item \textbf{Python 訓練介面}：提供 Python API 與 PyTorch 支援，可使用多種強化學習算法進行訓練，並與 Unity 環境實時交換資料。
+	
+	\item \textbf{支援多種學習模式}：
+	
+	\begin{itemize}
+	\item 強化學習（Reinforcement Learning, RL）：透過試錯學習優化策略。
+	
+	\item 模仿學習（Imitation Learning）：透過人類示範數據訓練智能體模仿行為。
+	
+	\item 自我對弈（Self-Play）：適用於對抗型任務，智能體透過與自己或其他智能體對弈學習策略。
+	\end{itemize}	
+
+	\item \textbf{模型匯出與部署}：訓練完成的策略可以匯出為模型（如 ONNX 格式），直接在 Unity 環境中執行，無需依賴 Python 訓練器。
+\end{itemize}
+
+ML-Agents 套件的引入，使 Unity 不僅可以用於互動式模擬，也可作為智能體學習與研究的高效平台，特別適合機器人控制、自駕模擬以及複雜行為策略的研究。
+
+
+\subsection{Crest 海洋環境模擬套件}
+Crest 是一款專為 Unity3D 開發的高品質海洋渲染與模擬插件，用於生成逼真的水面效果和動態海洋環境。它廣泛應用於遊戲開發、虛擬現實（VR）、模擬器以及互動式應用中，能夠提供高度真實的水面視覺效果和物理互動。
+
+\subsubsection{核心特點}
+\begin{itemize}
+    \item \textbf{逼真波浪模擬}：使用 FFT（Fast Fourier Transform）生成自然海浪，可模擬遠景大波和近景小波紋。
+    \item \textbf{水面光影效果}：支援動態反射、折射及水下光照，呈現真實光影交互。
+    \item \textbf{物理互動}：支援物體與水面的動態交互，如浮動物體、波紋生成和水面擾動。
+    \item \textbf{性能優化}：提供 LOD（Level of Detail）管理與 GPU 加速技術，在大規模水域場景下保持高效能。
+    \item \textbf{可擴展性}：提供 API 與 Shader 支援，便於與自訂物理系統、智能體或其他模擬模組整合。
+\end{itemize}
+
+\subsubsection{應用範圍}
+\begin{itemize}
+    \item \textbf{遊戲開發}：海洋場景、水面效果和船舶模擬。
+    \item \textbf{虛擬現實與互動體驗}：提供逼真的水域沉浸感。
+    \item \textbf{模擬器與科研}：水面物理與環境交互模擬。
+\end{itemize}
+
+Crest 以其高品質渲染、動態物理交互及可擴展性，成為 Unity 平台上常用的海洋模擬與視覺效果插件。
+
 
 \section{系統設計與技術實作}
-% 請在此處添加實驗結果內容
+
+\subsection{硬體設備}
+本研究的實驗電腦與核心硬體規格如下：
+\begin{itemize}
+    \item \textbf{GPU}：RTX-4070
+\end{itemize}
+
+\subsection{軟體環境}
+實驗所使用的作業系統、開發環境與版本控制工具如下：
+\begin{itemize}
+    \item \textbf{作業系統 (OS)}：Windows 11
+    \item \textbf{Python}：3.10.11
+    \item \textbf{Unity}：6000.0.39f1
+    \item \textbf{Unity DevOps Version Control}：11.0
+    \item \textbf{CUDA}：依 GPU 驅動版本
+    \item \textbf{PyTorch}：依實驗需求版本
+\end{itemize}
+
+\subsection{使用套件與框架}
+本研究使用的套件與框架如下：
+\begin{itemize}
+    \item \textbf{Crest}：3.0.2
+    \item \textbf{ML-Agents}：3.0.0
+\end{itemize}
+
+\subsection{系統架構設計}
+本研究系統架構設計包含環境架構與感測器模擬設定，實驗流程分為兩個主要階段：訓練階段與模擬測試階段。
+
+\subsubsection{實驗架構設計}
+本研究的實驗流程分為「訓練階段」與「模擬測試階段」兩部分。首先，在訓練階段中，系統將環境設置為訓練模式，並建立一個具備隨機障礙物與「殭屍船」的模擬場景。我們會使用單一代理人訓練的方式，透過深度強化學習進行訓練，學習導航與避障策略，以確保其能在複雜的海況下保持穩定航行並避免碰撞。
+
+接著，在模擬測試階段，系統將環境切換為模擬模式，並於場景中部署多艘自主船舶，這些船舶均掛載前一階段所完成的訓練模型。在這個環境中，我們移除了殭屍船，並引入遇難者系統以生成需要救援的目標，搭配風浪與障礙物，重現真實的救援搜尋場景。船舶群集在此階段能同時執行搜救任務，展現協作與分工行為。於此過程中，系統持續記錄各項效能指標數據，以供後續統計與分析之用。
+
+最後，為確保結果的穩定性與可靠性，本研究採取重複模擬的方式，於相同或不同環境條件下多次執行實驗，並蒐集大量數據進行比較與討論，從而驗證模型再實際應用中的可靠性與效能。
+
+\subsubsection{環境系統架構}
+\subsubsection{環境系統架構}
+
+\textbf{訓練環境}  (圖片)
+
+\textbf{模擬救援環境}   (圖片)
+
+\begin{itemize}
+	 \item \textbf{中央控制系統 (Central Control System)}
+	\begin{itemize}
+	    \item \textbf{環境啟動器 (Environment Launcher)}：負責啟動並管理整個環境。
+	\end{itemize}
+	
+	 \item \textbf{船舶管理系統 (Ship Manager System)}
+	\begin{itemize}
+	    \item \textbf{殭屍船 (Zombie Boat)}：配備隨機動作選擇器與動作模組，作為訓練模式的虛擬代理。
+	    \item \textbf{智能船 (Agent Boat)}：訓練後的智能代理，配備射線感測器、雷達感測器、攝影機、神經網路與動作模組。
+	    \item \textbf{船舶資料管理器 (Ships Data Manager)}：統一管理兩種船舶資料，例如當前位置、航向等。
+	\end{itemize}
+	
+	 \item \textbf{波浪系統 (Crest)}
+	\begin{itemize}
+	    \item \textbf{海洋渲染器 (Ocean Render)}：負責生成整個海洋。
+	    \item \textbf{波浪形狀渲染器 (Wave Shape Render)}：產生波浪的元件。
+	    \item \textbf{浮力管理器 (Buoyancy Manager)}：處理物體在水中的浮力計算。
+	\end{itemize}
+	
+	 \item \textbf{障礙物管理系統 (Obstacle Manager System)}
+	\begin{itemize}
+	    \item \textbf{浮標管理器 (Buoy Manager)}：生成及設定障礙物參數，包括是否隨機、跟隨海浪飄移等。
+	    \item \textbf{障礙物資料管理器 (Obstacle Data Manager)}：統一管理所有障礙物資料。
+	    \item \textbf{牆壁管理器 (Wall Manager)}：生成牆壁障礙物。
+	\end{itemize}
+	
+	 \item \textbf{風力系統 (Wind System)}
+	\begin{itemize}
+	    \item \textbf{風力模擬器 (Wind Simulator)}：模擬海風，以重現更真實的搜救情境。
+	\end{itemize}
+	
+	 \item \textbf{遇難者系統 (Victim System)}
+	\begin{itemize}
+	    \item \textbf{遇難者生成模擬器 (Victim Simulator)}：負責生成每次模擬中的遇難者。
+	\end{itemize}
+	
+	 \item \textbf{系統與模組間的相互關係}
+	\begin{itemize}
+	    \item 船舶管理系統提供障礙物管理系統資訊，避免障礙物生成位置過於靠近船隻。
+	    \item 波浪系統影響船舶管理系統中船隻的物理特性。
+	    \item 波浪系統影響障礙物管理系統中障礙物的物理特性。
+	    \item 風力系統影響多個系統中各個物件的物理特性。
+	\end{itemize}
+
+\end{itemize}
+
+\subsection{強化學習架構}
+(數學公式我不太想打)
 
 \section{實驗設計與結果分析}
-% 請在此處添加結論內容
+
+\subsection{實驗環境架設}
+本實驗的模擬環境由 Unity 遊戲引擎及 Crest 海洋物理引擎結合而成，得以表現出真實的海面動態與船舶的物理特性。為測試自主船舶在不同情境下的效能，我們在環境中加入了多個變因：
+\begin{itemize}
+    \item 遇難者的位置：單個、多個或隨機生成
+    \item 動態障礙物：漂浮物、其他搜救船隻等
+    \item 搜索區域大小與分塊方式
+\end{itemize}
+透過上述條件組合與調整，我們得以評估自主船舶在海洋環境中的表現與穩定性。
+
+\subsection{模型訓練概述}
+\subsubsection{訓練目標}
+我們使用 SAC 深度強化學習演算法進行模擬訓練，旨在讓自主船舶具有導航能力與穩定避障的能力。因此在訓練的過程中，我們特別重視船舶的兩種指標：
+\begin{itemize}
+    \item 任務完成時長：船隻由初始位置到目標點所需時間
+    \item 碰撞次數：船隻與障礙物碰撞次數
+\end{itemize}
+訓練過程中，我們著重於降低兩者的數值，以確保船舶能在多變且複雜的條件下能夠維持良好的表現，並且得以完成任務目標。
+
+\subsubsection{訓練環境的架設}
+本實驗的訓練環境以 Unity 與 Crest 海洋物理引擎為基礎，模擬出真實的海面，包括風浪、風速及動態的障礙物，以提供船隻導航及避障所需的複雜環境。我們在場景中配置一個訓練船隻，並加入多艘「zombine boat」作為其他代理人的替代品，這些船隻會隨機行動，模擬多代理系統的互動行為。
+值得注意的是，雖然整體系統設計為多代理人系統，但直接訓練多代理人系統會使環境過於複雜，使收斂時間過長，甚至可能無法收斂，而我們的訓練目標僅是船隻的避障與導航，不會涉及代理間的合作。因此我們採用了單代理人的訓練方式，結合上述的 zombie boat 模擬多代理環境，既能節省資源，又能讓代理學習多代理系統下的避障與導航策略。
+
+\subsubsection{訓練流程}
+我們的訓練環境以 Unity + Crest 為主，結合 ML-Agents 深度強化學習框架，讓自主船舶能在真實的海面條件下學習避障與導航能力。整個流程可以分為以下階段：
+\begin{enumerate}
+    \item \textbf{環境初始化}：配置船隻、目標點、障礙物與 \textit{zombie boat}。
+    \item \textbf{深度強化學習訓練}：透過 ML-Agents 啟動訓練流程，並採用 SAC 演算法進行訓練，訓練目標為讓船隻從初始位置移動到目標點，同時，在途中不能碰到障礙物或是 zombie boat。
+    \item \textbf{訓練監控與紀錄}：使用 TensorBoard 監控訓練過程，包括回合獎勵、碰撞事件與成功到達目的地的次數。
+    \item \textbf{模型測試與驗證}：將訓練完成的模型部屬於模擬場景中，測試其在不同環境下的避障與導航表現。
+    \item \textbf{結果分析與策略優化}：根據訓練與測試的結果，分析模型在各方面的效能。
+\end{enumerate}
+
+\subsection{模擬任務設計與實驗方法}
+為了評估自主船舶的表現，我們設計了以下兩種任務類型，以模擬實際情況中自主船舶的實際應用：
+
+\subsubsection{單一落水點快速救援}
+這個情景用來模擬單一人員落海的情況，例如郵輪乘客落海、近岸游泳者被離岸流捲走、或是小型漁船翻覆導致單人落水等情景。該情境強調時間的敏感性及位置的不確定性，船隊需要經過仔細的搜尋，在最快的時間內定位落水的人員，並進行施救。
+
+在這個情景下，我們使用以下方法設定我們的環境：
+\begin{itemize}
+    \item 遇難者定位：位置不明，只知道大概的範圍。
+    \item 實驗參數：
+    \begin{itemize}
+        \item 偵測半徑：
+        \item 船隻數量：
+        \item time-out：
+        \item 海象等級：
+        \item 障礙物密集度：
+    \end{itemize}
+    \item 終止條件與成功判定：
+    \begin{itemize}
+        \item 成功：任一船隻找到落水者並標記，在 time-out 前完成。
+        \item 終止：超過 time-out、發生嚴重碰撞等。
+    \end{itemize}
+    \item 示意圖
+\end{itemize}
+
+\subsubsection{大範圍隨機搜尋任務}
+此情景用來模擬在大面積海域中進行隨機分布的搜救任務，例如海上船舶遇難、飛機海面迫降等等。該情境強調搜尋的覆蓋範圍與船體之間的配合，船隊需要再目標數量與位置不明確的情況下，盡可能的提高搜尋效率與範圍覆蓋率，同時也要降低碰撞的風險。
+
+在這個情景下，我們使用以下的方法設定模擬環境：
+\begin{itemize}
+    \item 目標分布：多個目標隨機生成於整個搜索區域，位置與數量隨機。
+    \item 實驗參數：
+    \begin{itemize}
+        \item 偵測半徑：
+        \item 船隻數量：
+        \item time-out：
+        \item 海象等級：
+        \item 障礙物密集度：
+    \end{itemize}
+    \item 終止條件與成功判定：
+    \begin{itemize}
+        \item 成功：船隻找到所有落水人員並標記，在 time-out 前完成。
+        \item 終止：超過 time-out、發生嚴重碰撞等。
+    \end{itemize}
+    \item 示意圖
+\end{itemize}
+
+\subsubsection{任務效能評估}
+有了以上兩種情境後，我們根據我們的需求制定了一系列的評估指標來量化船隊在搜尋任務中的表現。主要指標包括：
+\begin{itemize}
+    \item 標記時間：指從任務開始到落水者被成功定位的總時間。
+    \item 成功救援率：在任務時間的限制內，船隊成功找到落水者的比例。
+    \item 碰撞次數：船隻之間或與障礙物發生直接接觸的次數。
+    \item 搜尋覆蓋程度：船隊在搜尋任務中實際搜尋的範圍。
+    \item 資源使用量：包括船隻的航程長度及估算的資源消耗。
+\end{itemize}
+
+以上的指標除了量化船隊在救援上的表現外，也同時得以反映任務中錯誤的發生率。透過對這些指標進行系統化的分析，我們設計了以下的終極目標，以確保在實際應用中既能提高救援效率，又能控制風險與資源消耗：
+\begin{itemize}
+    \item 最小化標記時間：確保船隊能在最短的時間內完成任務。
+    \item 提高成功救援率：增加船隊的可靠性及穩定性。
+    \item 降低碰撞次數：提升船隊作業的安全性，減少意外風險。
+    \item 提高搜尋覆蓋程度：確保區域被充分搜尋，降低目標遺漏的機率。
+    \item 增加救援人數與資源使用量的比值 (待討論)：提升資源運用效率。
+\end{itemize}
+
+\subsubsection{實驗流程}
+\begin{enumerate}
+    \item 根據以上兩種情境設定參數：包括船隻數量、偵測半徑、障礙物密度等等，確保模擬場景能夠模擬出多種真實情況。
+    \item 部屬船隊於初始位置準備開始：船隻將自行到達初始位置，並等待所有船隻就位，確保所有船隻同時開始搜尋。
+    \item 開始進行搜尋，每艘船分別執行合作搜尋任務：船隊依據既定的策略及路徑，開始進行搜尋。
+    \item 紀錄相關數據以利未來做分析：(我們輸出了甚麼資料這裡寫一下)
+    \item 重複模擬多次，以獲取大量數據進行分析：透過不同的環境重複實驗，確保結果可靠，並進行進一步的分析。
+\end{enumerate}
+
+\subsection{實驗結果呈現}
+\subsubsection{單一落水點快速救援}
+(數據)
+
+\subsubsection{大範圍隨機搜尋任務}
+(數據)
+
+
 
 \section{結論與未來發展}
 
