@@ -1,0 +1,140 @@
+\documentclass[12pt,a4paper]{article}
+
+% 中文支援套件
+\usepackage[UTF8,scheme=chinese]{ctex}
+\usepackage{xeCJK}
+
+% 繁體中文設定
+\ctexset{
+    contentsname={目錄},
+    listfigurename={圖目錄},
+    listtablename={表目錄},
+    figurename={圖},
+    tablename={表},
+    abstractname={摘要},
+    indexname={索引},
+    appendixname={附錄},
+    bibname={參考文獻}
+}
+
+% 基本套件
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{cite}
+\usepackage{url}
+\usepackage{hyperref}
+
+% 頁面設定
+\geometry{
+    left=3cm,
+    right=2cm,
+    top=2.5cm,
+    bottom=2.5cm
+}
+
+% 行距設定
+\onehalfspacing
+
+% 標題資訊
+\title{船舶群集搜救模擬系統}
+\author{作者姓名}
+\date{\today}
+
+\begin{document}
+
+% 標題頁
+\maketitle
+
+% 摘要
+\begin{abstract}
+海上搜救任務面臨著範圍廣闊、海象險惡、時間緊迫等嚴峻挑戰。為應對此一難題，本專案建構了一套「船舶群集搜救模擬系統」。系統核心旨在模擬並最佳化真實的搜救作業流程：首先，依據目標可能區域進行高效的網格化分割；接著，指揮調度多艘船隻構成的搜救群集，對各區塊展開平行搜索，以最大化覆蓋率並縮短黃金救援時間。我們在 Unity 與 Crest 物理引擎打造的擬真海洋環境中，採用 SAC 深度強化學習演算法，賦予每艘搜救船隻在複雜風浪中自主執行精密搜索路徑、並規避動態障礙物的能力。本專案旨在評估此 AI 驅動的搜救群集，在不同搜救情境下，對於提升目標發現成功率、縮短搜救時間的實際成效，為未來智慧化海上應急響應系統提供關鍵的模擬驗證。
+\end{abstract}
+
+\noindent\textbf{關鍵詞：} 船舶群集、搜救系統、深度強化學習、多智慧體系統、海洋模擬
+
+\newpage
+
+% 目錄
+\tableofcontents
+\newpage
+
+% 正文開始
+\section{緒論}
+
+\subsection{研究背景與動機}
+海洋覆蓋地球表面超過七成，是全球貿易、資源開發與休閒活動的核心場域。然而，隨著海上交通與作業日益頻繁，船舶事故、惡劣氣候與人員落水的風險持續上升。一旦發生事故，搜救（Search and Rescue, SAR）行動成為攸關人命的即時挑戰，其中「黃金救援時間」決定了受困者的生存率。
+
+傳統搜救模式仰賴人員經驗與指揮調度，在大範圍海域與高風險環境下常受限於人力與效率。隨著人工智慧（AI）、自主系統（Autonomous Systems）與高擬真模擬技術的成熟，發展基於智慧化與自主化的搜救系統已成為突破現有困境的契機。自主船舶群集可藉由耐航性、即時協作與精確導航，提升搜救任務的速度與覆蓋範圍，進而增加受困人員的獲救機率。本研究即在此背景下展開。
+
+\subsection{問題陳述}
+雖然自主船舶與強化學習的應用展現巨大潛力，但在搜救場景中仍面臨多重挑戰：
+
+\begin{enumerate}
+\item \textbf{搜索效率不足}：傳統平行線搜索在大範圍海域下難以兼顧效率與覆蓋率。
+\item \textbf{環境動態與不確定性}：風浪與洋流使船隻航行與感測受干擾，增加搜尋難度。
+\item \textbf{群集協同複雜性}：多艘船隻需避免重複搜索、確保安全並即時共享資訊。
+\item \textbf{時間壓力與決策挑戰}：有限時間內需快速分配資源並做出最佳判斷，錯誤可能導致錯失救援時機。
+\end{enumerate}
+
+因此，有必要建構一個智慧化模擬系統，以驗證不同策略並最佳化搜救行動。
+
+\subsection{研究目的}
+本研究的主要目標在於建立一個「智慧化船舶群集搜救模擬系統」，具體目的如下：
+
+\begin{itemize}
+\item \textbf{建立高擬真虛擬環境}：以 Unity 與 Crest 套件模擬真實海象與物理效果，作為測試平台。
+\item \textbf{開發自主搜救智慧體}：利用深度強化學習演算法（SAC 為核心，並比較 PPO 等方法），訓練船舶於動態環境中進行自主導航與避障。
+\item \textbf{設計群集協同策略}：透過分區搜尋與任務分配，提升多船協同效率，避免重複與衝突。
+\item \textbf{效能評估與驗證}：以模擬實驗檢驗系統在搜尋成功率、平均搜救時間與協同效率上的成效。
+\end{itemize}
+
+\subsection{專題架構}
+本專題共分為七章，內容安排如下：
+
+\begin{itemize}
+\item \textbf{第一章　緒論}：說明研究背景、問題陳述、研究目的與章節安排。
+\item \textbf{第二章　文獻回顧與討論}：探討海上搜救、強化學習、多代理人系統與模擬相關研究。
+\item \textbf{第三章　相關使用技術介紹}：介紹研究所採用之深度強化學習演算法（PPO/SAC）、Unity3D、ML-Agents 與 Crest 模擬套件。
+\item \textbf{第四章　系統設計與技術實作}：說明系統硬體與軟體環境、系統架構設計、強化學習架構與套件整合方法。
+\item \textbf{第五章　實驗設計與結果分析}：呈現實驗設計、數據收集與結果分析，驗證系統效能。
+\item \textbf{第六章　結論與未來發展}：總結研究成果，並提出研究限制與未來可能發展。
+\item \textbf{第七章　參考資料}：列出研究所參考之文獻與資料來源。
+\end{itemize}
+
+\section{文獻回顧}
+% 請在此處添加文獻回顧內容
+
+\section{系統設計與實作}
+% 請在此處添加系統設計內容
+
+\section{實驗結果與分析}
+% 請在此處添加實驗結果內容
+
+\section{結論與未來工作}
+% 請在此處添加結論內容
+
+% 參考文獻
+\begin{thebibliography}{9}
+
+\bibitem{example1}
+作者姓名,
+``論文標題,''
+\textit{期刊名稱},
+vol.~1, no.~1, pp.~1--10,
+月份 年份.
+
+\bibitem{example2}
+作者姓名,
+``書籍標題,''
+出版社名稱,
+年份.
+
+% 在此處添加更多參考文獻
+
+\end{thebibliography}
+
+\end{document}
