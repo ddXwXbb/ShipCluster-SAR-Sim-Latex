@@ -656,8 +656,8 @@ R_{\text{to}}, & s > T_{\max}\\
     \item \textbf{結果分析與策略優化}：根據訓練與測試的結果，分析模型在各方面的效能。
 \end{enumerate}
 
-\subsection{模擬任務設計與實驗方法}
-為了評估自主船舶的表現，我們設計了以下兩種任務類型，以模擬實際情況中自主船舶的實際應用：
+\subsection{模擬任務設計與測試方法}
+自主船舶在經過深度強化學習的訓練後，已經具備了導航能力與避障能力，這使船舶能夠執行更高層次的任務—搜尋與救援。我們在設計過程中選擇了最為直觀的方法—平行線搜尋法。這種方法透過多搜船舶同時沿著平行航線推進，在大範圍的區域內進行高覆蓋率的搜尋，以擴大搜尋範圍並降低遺漏目標的可能性。雖然在傳統上，平行線搜尋法相較其他搜尋方法需要更大量的人力與資源，但本實驗所提出的自主船舶系統能夠以更低的成本執行此策略，並利用群集間的偕同航行來擴大搜尋範圍。
 
 \subsubsection{單一落水點快速救援}
 這個情景用來模擬單一人員落海的情況，例如郵輪乘客落海、近岸游泳者被離岸流捲走、或是小型漁船翻覆導致單人落水等情景。該情境強調時間的敏感性及位置的不確定性，船隊需要經過仔細的搜尋，在最快的時間內定位落水的人員，並進行施救。
@@ -665,13 +665,13 @@ R_{\text{to}}, & s > T_{\max}\\
 在這個情景下，我們使用以下方法設定我們的環境：
 \begin{itemize}
     \item 遇難者定位：位置不明，只知道大概的範圍。
-    \item 實驗參數：
+    \item 測試參數：
     \begin{itemize}
-        \item 偵測半徑：
-        \item 船隻數量：
-        \item time-out：
-        \item 海象等級：
-        \item 障礙物密集度：
+        \item 偵測半徑：100 m
+        \item 船隻數量：5 艘
+        \item time-out：200 秒
+        \item 海象等級：正常
+        \item 障礙物密集度：無障礙物
     \end{itemize}
     \item 終止條件與成功判定：
     \begin{itemize}
@@ -687,13 +687,14 @@ R_{\text{to}}, & s > T_{\max}\\
 在這個情景下，我們使用以下的方法設定模擬環境：
 \begin{itemize}
     \item 目標分布：多個目標隨機生成於整個搜索區域，位置與數量隨機。
-    \item 實驗參數：
+    \item 測試參數：
     \begin{itemize}
         \item 偵測半徑：125 m
         \item 船隻數量：5 艘
         \item time-out：200 秒
         \item 海象等級：正常
         \item 障礙物密集度：密集
+        \item 落海人數：10 人
     \end{itemize}
     \item 終止條件與成功判定：
     \begin{itemize}
@@ -706,23 +707,17 @@ R_{\text{to}}, & s > T_{\max}\\
 \subsubsection{任務效能評估}
 有了以上兩種情境後，我們根據我們的需求制定了一系列的評估指標來量化船隊在搜尋任務中的表現。主要指標包括：
 \begin{itemize}
-    \item 標記時間：指從任務開始到落水者被成功定位的總時間。
-    \item 成功救援率：在任務時間的限制內，船隊成功找到落水者的比例。
-    \item 碰撞次數：船隻之間或與障礙物發生直接接觸的次數。
-    \item 搜尋覆蓋程度：船隊在搜尋任務中實際搜尋的範圍。
-    \item 資源使用量 (待討論)：包括船隻的航程長度及估算的資源消耗。
+    \item \textbf{成功救援率}：在任務時間的限制內，船隊成功找到落水者的比例。
+    \item \textbf{搜尋覆蓋程度}：船隊在搜尋任務中實際搜尋的範圍。
 \end{itemize}
 
 以上的指標除了量化船隊在救援上的表現外，也同時得以反映任務中錯誤的發生率。透過對這些指標進行系統化的分析，我們設計了以下的終極目標，以確保在實際應用中既能提高救援效率，又能控制風險與資源消耗：
 \begin{itemize}
-    \item 最小化標記時間：確保船隊能在最短的時間內完成任務。
-    \item 提高成功救援率：增加船隊的可靠性及穩定性。
-    \item 降低碰撞次數：提升船隊作業的安全性，減少意外風險。
-    \item 提高搜尋覆蓋程度：確保區域被充分搜尋，降低目標遺漏的機率。
-    \item 增加救援人數與資源使用量的比值 (待討論)：提升資源運用效率。
+    \item \textbf{提高成功救援率}：增加船隊的可靠性及穩定性。
+    \item \textbf{提高搜尋覆蓋程度}：確保區域被充分搜尋，降低目標遺漏的機率。
 \end{itemize}
 
-\subsubsection{實驗流程}
+\subsubsection{測試流程}
 \begin{enumerate}
     \item 根據以上兩種情境設定參數：包括船隻數量、偵測半徑、障礙物密度等等，確保模擬場景能夠模擬出多種真實情況。
     \item 部屬船隊於初始位置準備開始：船隻將自行到達初始位置，並等待所有船隻就位，確保所有船隻同時開始搜尋。
@@ -731,14 +726,58 @@ R_{\text{to}}, & s > T_{\max}\\
     \item 重複模擬多次，以獲取大量數據進行分析：透過不同的環境重複實驗，確保結果可靠，並進行進一步的分析。
 \end{enumerate}
 
-\subsection{實驗結果呈現}
+\newpage
+
+\subsection{測試結果呈現}
 \subsubsection{單一落水點快速救援}
-(數據)
+
+以下三張圖片是搜尋任務的執行情況，圖片中的方框為落海者的可能範圍，紅點為實際遇難者的位置，而不同的顏色則代表在搜尋過程中各個位置被不同船隻的搜尋範圍所搜尋的次數，船隊由圖片左下角出發，進入紅框開始搜尋。
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{image/SingleInRangeSuccess.png}
+        \caption{範圍內搜尋成功案例}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{image/SingleOutOfRangeSuccess.png}
+        \caption{範圍外搜尋部分成功}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{image/SingleOutOfRangeFail.png}
+        \caption{範圍外搜尋失敗案例}
+    \end{minipage}
+\end{figure}
+
+我們一共進行了 359 次測試，其中 295  次成功，64  次失敗，整體救援率高達 82\%。由於所有船隻的偵測範圍幾乎掃過整個方框範圍，顯示搜尋的覆蓋率相當完整，幾乎涵蓋了所有的可能落水區域，甚至能找到漂流至方框外的落水者。此結果顯示，我們設計的系統確實能夠在廣闊且情況未知的海域中，以相對低廉的成本的執行平行化搜尋，並有效定位落水者。雖然存在一定比例的失敗案例，但比例有限，且整體數據充分證明系統在本情境中的可行性。
+
+\newpage
 
 \subsubsection{大範圍隨機搜尋任務}
-(數據)
 
+以下兩張圖片是大範圍搜尋任務的執行情況，圖片中的方框為落海者的可能範圍，紅點為實際遇難者的位置，而不同的顏色則代表在搜尋過程中各個位置被不同船隻的搜尋範圍所搜尋的次數，船隊由圖片左下角出發，進入紅框開始搜尋。
 
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{image/MultiLooseSuccess.png}
+        \caption{分散搜尋成功案例}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{image/MultiTightSuccess.png}
+        \caption{緊密搜尋成功案例}
+    \end{minipage}%
+\end{figure}
+
+我們一共進行了 109 次測試，在這幾輪測試中，總計模擬了 1070 位落海人士，而系統成功救起了 831 人，整體救援率高達 78\%。此情境主要模擬大型船難、空難海面迫降等大規模搜救任務，在這種情況下，落水人員往往散落在海面各處，傳統的人力搜尋難以快速且全面的掌握其位置。而我們的系統能有效定位分布於不同區域的人員，並將人員位置標示出來，方便救援人員到達現場進行救援。而實驗的結果顯示，我們所設計的自主船舶群集得以在大範圍、高度不確定性的環境中展現相當好的搜尋與定位能力，表現了本系統在大規模災難現場中做為輔助搜救工具的應用潛力。
 
 \section{結論與未來發展}
 
@@ -753,25 +792,31 @@ R_{\text{to}}, & s > T_{\max}\\
 
 \subsection{專題成果與限制}
 \subsubsection{專題成果}
-\paragraph{系統面成果}：系統是否實現主要功能、是否符合預期。
+\paragraph{系統面成果}系統是否實現主要功能、是否符合預期。
 
-\paragraph{實驗或應用面成果}：實驗結果及模擬數據的測試成效。這個方法是否真的能夠提升成功率、縮短救援時間。
+\paragraph{實驗或應用面成果}實驗結果及模擬數據的測試成效。這個方法是否真的能夠提升成功率、縮短救援時間。
 
-\paragraph{理論或方法面成果}：模型避障、導航上的表現。
+\paragraph{理論或方法面成果}模型避障、導航上的表現。
 
-\paragraph{應用與價值}：實際上的應用場景與價值。
+\paragraph{應用與價值}實際上的應用場景與價值。
 
 \subsubsection{研究限制}
-\paragraph{系統與技術限制}：硬體效能、模擬器的模擬精度問題。
+\paragraph{系統與技術限制}硬體效能、模擬器的模擬精度問題。
 
-\paragraph{實驗設計限制}：模擬環境和真實環境的差異，參數的設定無法涵蓋所有情境。
+\paragraph{實驗設計限制}模擬環境和真實環境的差異，參數的設定無法涵蓋所有情境。
 
-\paragraph{方法論限制}：演算法的能力不足(?、訓練的收斂或穩定性問題。
+\paragraph{方法論限制}演算法的能力不足(?、訓練的收斂或穩定性問題。
 
-\paragraph{時間與資源限制}：缺乏實際的場域或設備。
+\paragraph{時間與資源限制}缺乏實際的場域或設備。
 
 \subsection{未來研究方向}
-% 在此補充後續可進一步探討的方向
+\paragraph{發展更多搜尋方法}
+
+\paragraph{優化強化學習模型參數}
+
+\paragraph{新增更多環境變因}
+
+\paragraph{連接到實體測試}
 
 \subsection{可行的解決方案}
 % 在此補充對目前限制的改善方案或建議
