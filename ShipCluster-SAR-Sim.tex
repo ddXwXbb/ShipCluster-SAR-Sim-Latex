@@ -1,8 +1,7 @@
 % !TeX program = xelatex
 
-\documentclass[12pt,a4paper]{ctexart}
+\documentclass[12pt,a4paper]{article}
 
-\usepackage{ctex}
 \usepackage[UTF8,scheme=chinese]{ctex}
 \usepackage{xeCJK}
 \usepackage{url}
@@ -14,17 +13,20 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{cite}
+\usepackage{fontspec}
 
-\hypersetup{breaklinks=true}
+\setmainfont{Times New Roman}
+
 \setCJKmainfont{標楷體}
-\XeTeXlinebreaklocale "zh"
-\XeTeXlinebreakskip = 0pt plus 1pt 
 
-\defaultCJKfontfeatures{AutoFakeBold=6,AutoFakeSlant=.4}
-\newCJKfontfamily\Kai{標楷體}
-\newCJKfontfamily\Hei{微軟正黑體} 
-\newCJKfontfamily\NewMing{新細明體} 
-% 繁體中文設定
+\newCJKfontfamily\kaiFakeBold[FakeBold=2]{標楷體}
+
+\makeatletter
+\renewcommand\bfseries{
+  \kaiFakeBold
+  \fontseries\bfdefault\selectfont
+}
+\makeatother
 
 \ctexset{
     contentsname={目錄},
@@ -258,6 +260,8 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
   \item \textbf{PPO（Proximal Policy Optimization）}：一種在策略空間進行優化的演算法，核心概念是在保證新的策略與舊的策略差異不會太大的前提下，尋找一個性能更好的策略。
   \item \textbf{SAC（Soft Actor-Critic）}：基於 Actor-Critic 的演算法，融合最大熵強化學習，在學習高回報策略的同時，鼓勵策略保持隨機性以提升探索能力，適合高維度與連續動作空間。
 \end{itemize}
+
+\newpage
 
 \paragraph{案例分析}
 \begin{itemize}
