@@ -2,13 +2,19 @@
 
 \documentclass[12pt,a4paper]{ctexart}
 
-% 中文支援套件
 \usepackage{ctex}
 \usepackage[UTF8,scheme=chinese]{ctex}
 \usepackage{xeCJK}
 \usepackage{url}
 \usepackage{hyperref}
 \usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{cite}
+
 \hypersetup{breaklinks=true}
 \setCJKmainfont{標楷體}
 \XeTeXlinebreaklocale "zh"
@@ -33,15 +39,7 @@
 }
 
 % 基本套件
-\usepackage{geometry}
-\usepackage{setspace}
-\usepackage{graphicx}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\usepackage{cite}
-\usepackage{url}
-\usepackage{hyperref}
+
 
 % 頁面設定
 \geometry{
@@ -54,11 +52,6 @@
 % 行距設定
 \onehalfspacing
 
-% 標題資訊
-\title{船舶群集搜救模擬系統}
-\author{作者姓名}
-\date{\today}
-
 \begin{document}
 \begin{titlepage}
 
@@ -68,7 +61,7 @@
 	{\Large 國立臺灣海洋大學\\[0.5cm]資訊工程系專題報告 \par}
 	
 	\vspace*{1cm}
-	{\Huge 船舶群集搜救模擬系統 \par}
+	{\Huge 智慧化船舶群集搜救模擬系統 \par}
 	
 	\vfill
 	
@@ -87,7 +80,7 @@
 % 摘要
 \vspace*{0.3\textheight}
 \begin{abstract}
-海上搜救任務面臨著範圍廣闊、海象險惡、時間緊迫等嚴峻挑戰。為應對此一難題，本專案建構了一套「船舶群集搜救模擬系統」。系統核心旨在模擬並最佳化真實的搜救作業流程：首先，依據目標可能區域進行高效的網格化分割；接著，指揮調度多艘船隻構成的搜救群集，對各區塊展開平行搜索，以最大化覆蓋率並縮短搜尋時間。我們在 Unity 與 Crest 物理引擎打造的擬真海洋環境中，採用 SAC 深度強化學習演算法，賦予每艘搜救船隻在複雜風浪中自主執行精密搜索路徑、並規避動態障礙物的能力。本專案旨在評估此 AI 驅動的搜救群集，在不同搜救情境下，對於提升目標發現成功率、縮短搜救時間的實際成效，為未來智慧化海上應急響應系統提供關鍵的模擬驗證。
+海上搜救任務面臨著範圍廣闊、海象險惡、時間緊迫等嚴峻挑戰。為應對此一難題，本專案建構了一套「智慧化船舶群集搜救模擬系統」。系統核心旨在模擬並最佳化真實的搜救作業流程：首先，依據目標可能區域進行高效的網格化分割；接著，指揮調度多艘船隻構成的搜救群集，對各區塊展開平行搜索，以最大化覆蓋率並縮短搜尋時間。我們在 Unity 與 Crest 物理引擎打造的擬真海洋環境中，採用 SAC 深度強化學習演算法，賦予每艘搜救船隻在複雜風浪中自主執行精密搜索路徑、並規避動態障礙物的能力。本專案旨在評估此 AI 驅動的搜救群集，在不同搜救情境下，對於提升目標發現成功率、縮短搜救時間的實際成效，為未來智慧化海上應急響應系統提供關鍵的模擬驗證。
 \end{abstract}
 
 \centerline{\textbf{關鍵詞：} 船舶群集、搜救系統、深度強化學習、多智慧體系統、海洋模擬}
@@ -110,7 +103,7 @@
 雖然自主船舶與強化學習的應用展現巨大潛力，但在搜救場景中仍面臨多重挑戰：
 
 \begin{enumerate}
-\item \textbf{搜索效率不足}：傳統平行線搜索在大範圍海域下難以兼顧效率與覆蓋率。
+\item \textbf{搜索效率不足}：傳統搜索在大範圍海域下難以兼顧效率與覆蓋率。
 \item \textbf{環境動態與不確定性}：風浪與洋流使船隻航行與感測受干擾，增加搜尋難度。
 \item \textbf{群集協同複雜性}：多艘船隻需避免重複搜索、確保安全並即時共享資訊。
 \item \textbf{時間壓力與決策挑戰}：有限時間內需快速分配資源並做出最佳判斷，錯誤可能導致錯失救援時機。
@@ -123,7 +116,7 @@
 
 \begin{itemize}
 \item \textbf{建立高擬真虛擬環境}：以 Unity 與 Crest 套件模擬真實海象與物理效果，作為測試平台。
-\item \textbf{開發自主搜救智慧體}：利用深度強化學習演算法（SAC 為核心，並比較 PPO 等方法），訓練船舶於動態環境中進行自主導航與避障。
+\item \textbf{開發自主搜救智慧體}：利用深度強化學習演算法，訓練船舶於動態環境中進行自主導航與避障。
 \item \textbf{設計群集協同策略}：透過分區搜尋與任務分配，提升多船協同效率，避免重複與衝突。
 \item \textbf{效能評估與驗證}：以模擬實驗檢驗系統在搜尋成功率、平均搜救時間與協同效率上的成效。
 \end{itemize}
@@ -134,7 +127,7 @@
 \begin{itemize}
 \item \textbf{第一章　緒論}：說明研究背景、問題陳述、研究目的與章節安排。
 \item \textbf{第二章　文獻回顧與討論}：探討海上搜救、強化學習、多代理人系統與模擬相關研究。
-\item \textbf{第三章　相關使用技術介紹}：介紹研究所採用之深度強化學習演算法（PPO/SAC）、Unity3D、ML-Agents 與 Crest 模擬套件。
+\item \textbf{第三章　相關使用技術介紹}：介紹研究所採用之深度強化學習演算法（SAC）、Unity3D、ML-Agents 與 Crest 模擬套件。
 \item \textbf{第四章　系統設計與技術實作}：說明系統硬體與軟體環境、系統架構設計、強化學習架構與套件整合方法。
 \item \textbf{第五章　實驗設計與結果分析}：呈現實驗設計、數據收集與結果分析，驗證系統效能。
 \item \textbf{第六章　結論與未來發展}：總結研究成果，並提出研究限制與未來可能發展。
@@ -148,33 +141,68 @@
 \subsection{海上搜救相關研究}
 
 \subsubsection{傳統海上搜救方法}
-\paragraph{Expanding square search（擴展方形搜尋）}  
-適用於目標位置大致已知、中等範圍的搜尋。搜尋點從基準點開始搜尋，每次往前一段距離後轉向 90 度，每次轉向航段都會逐漸加長。需要準確的導航系統。
+傳統的海上搜救方法在《IAMSAR 操作手冊》\cite{IAMSAR2008} 中有明確規範，常見的類型有：
+\begin{itemize}
+	\item \textbf{Expanding square search（擴展方形搜尋）}
+	\begin{itemize}
+		\item 適用於目標位置大致已知、中等範圍的搜尋。
+		\item 搜尋點從基準點開始搜尋，每次往前一段距離後轉向 90 度，每次轉向航段都會逐漸加長。
+		\item 需要準確的導航系統。
+	\end{itemize}
+	\item \textbf{Sector search（扇形搜尋）}
+	\begin{itemize}
+		\item 適用於目標位置明確、小範圍的搜尋。
+		\item 搜尋方式由基準點為圓心，進行放射狀的搜尋。
+		\item 最多只能由一艘船與一架飛機分別進行搜尋。
+	\end{itemize}
+	\item \textbf{Parallel sweep search（平行航線搜尋）}
+	\begin{itemize}
+		\item 適用於目標位置未知、大範圍的搜尋。
+		\item 搜尋區域被劃分為多個子區域，由不同的船舶分工搜尋，每個子區域的搜尋航線互相平行，並與海流方向一致。
+		\item 由於派出的單位較多，因此需要消耗大量的資源。
+	\end{itemize}
+\end{itemize}
 
-\paragraph{Sector search（扇形搜尋）}  
-適用於目標位置明確、小範圍的搜尋。搜尋方式由基準點為圓心，進行放射狀的搜尋。最多只能由一艘船與一架飛機分別進行搜尋。
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{image/ExpandingSquareSearch.png}
+        \caption{擴展方形搜尋}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{image/SectorSearch.png}
+        \caption{扇形搜尋}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{image/ParallelSweeepTrack.png}
+        \caption{平行航線搜尋}
+    \end{minipage}
+\end{figure}
 
-\paragraph{Parallel sweep search（平行航線搜尋）}  
-適用於目標位置未知、大範圍的搜尋。搜尋區域被劃分為多個子區域，由不同的船舶分工搜尋，每個子區域的搜尋航線互相平行，並與海流方向一致。由於派出的單位較多，因此需要消耗大量的資源。
 
 \subsubsection{傳統方法的限制與挑戰}
 \begin{itemize}
   \item \textbf{安全風險}：傳統的搜救方式需要出動大量的人員與船舶，如在極端天候可能會造成額外的風險。
   \item \textbf{人力與資源消耗}：以平行航線為例，雖然能夠覆蓋較大的範圍，但同時也需要使用大量的船舶及人員，而搜救成本也隨之增加。
   \item \textbf{搜尋效率受限}：擴展正方形、扇形搜尋雖然成本相較為低廉，然而其搜尋範圍相對有限，並且在海流及海風的影響下，航線容易偏移，降低搜尋效率。
-  \item \textbf{時效性不足}：當目標位置未知且搜尋範圍過大，傳統搜尋方法往往很難在黃金救援期間完成全面搜尋。
+  \item \textbf{時效性不足}：當目標位置未知且搜尋範圍過大，傳統的人工搜尋方法往往很難在黃金救援期間完成全面搜尋。
 \end{itemize}
 
 \subsubsection{技術發展}
 隨著科技進步，傳統搜救方式的限制逐漸被新技術所補足：
 \begin{itemize}
-  \item \textbf{無人機}：具備快速部屬及高機動性，能在短時間內對大範圍的海域進行空中偵查。
+  \item \textbf{無人機}：具備高機動性，能在短時間內對大範圍的海域進行空中偵查。
   \item \textbf{自主船舶}：可執行長時間、低成本的搜尋，降低人員風險與油料消耗。使用群集作業可以補足平行航線搜尋的缺點，在維持大範圍的情況下同時減少搜尋成本。
   \item \textbf{混和搜救系統}：結合有人、無人船舶及無人機，形成「立體化」的搜尋網路。有人單位可以集中精力於高價值決策或特殊任務，無人單位負責長時間及大範圍的搜尋。
 \end{itemize}
 
 \subsection{自主船舶系統現代應用}
-自主船舶（USV）的發展：隨著無人化技術的推進，USV 在海洋產業中逐漸成熟並投入實際應用。主要集中在以下的面向：
+隨著無人化技術的推進，USV 在海洋產業中逐漸成熟並投入實際應用。主要集中在以下的面向：
 \begin{itemize}
   \item \textbf{任務自動化與導航精準度}：透過高精度 GPS 與自主導航演算法，使船舶能在無人操控下完成大範圍的搜尋與調查。
   \item \textbf{能源與續航力優化}：積極推動電力及太陽能的使用，用以滿足長時間海上作業的需求。
@@ -233,8 +261,8 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
 
 \paragraph{案例分析}
 \begin{itemize}
-  \item 無人車模擬環境中的 DQN 應用：一項研究探討了 DQN 在無人車模擬環境中的應用，特別是在安全、正常與激進駕駛模式下的表現。結果顯示，DQN 能夠有效學習並適應不同駕駛模式。
-  \item 無人機應急導航：斯坦福大學的研究團隊開發了一個基於 DQN 和 SAC 的無人機導航系統，用於應急情境中的快速部署與導航。
+  \item 無人車模擬環境中的 DQN 應用：一項研究探討了 DQN 在無人車模擬環境中的應用，特別是在安全、正常與激進駕駛模式下的表現。結果顯示，DQN 能夠有效學習並適應不同駕駛模式。\cite{rybchak2024}
+  \item 無人機應急導航：斯坦福大學的研究團隊開發了一個基於 DQN 和 SAC 的無人機導航系統，用於應急情境中的快速部署與導航。\cite{greenberg}
 \end{itemize}
 
 \subsection{模擬平台與方法比較}
@@ -267,7 +295,7 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
   \item \textbf{多代理人系統（Multi-Agent Systems, MAS）}：
   MAS 由多個自主代理人組成，每個代理人能獨立運作，並透過協作、競爭等方式完成各自或共同的任務目標。常應用於大規模、分散且動態的環境。其訓練難度較高，主要挑戰包括：
   \begin{itemize}
-    \item \textbf{動態環境}：每個代理人在學習中會改變策略，導致環境不斷變化，難以捉摸。
+    \item \textbf{動態環境}：每個代理人在學習中會改變策略，導致環境不斷變化，不可預測且難以捉摸。
     \item \textbf{部分觀測與不確定性}：每個代理人只能感知局部環境資訊，需要推斷其他代理人的狀態及意圖。
     \item \textbf{協作與衝突}：代理人需要學習如何協作及分工，避免互相干擾。
   \end{itemize}
@@ -276,19 +304,14 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
 \subsection{文獻總結與研究方向}
 
 \begin{itemize}
-  \item \textbf{研究缺口}：缺乏針對「群集自主船舶」在惡劣環境下進行搜救的高擬真模擬平台。
+  \item \textbf{研究缺口}：缺乏針對「智慧化船舶群集」在海洋環境下進行搜救的模擬平台。
   \item \textbf{本研究貢獻}：
   \begin{itemize}
     \item 建立結合 Unity 與 Crest 的海洋高擬真測試平台。
-    \item 開發基於 SAC 的自主船舶智慧體，並對比 PPO 等方法。
-    \item 提出可行的群集協同策略，並透過模擬驗證效能。
+    \item 開發基於 SAC 的自主船舶智慧體。
+    \item 提出可行的群集搜尋策略，並透過模擬驗證效能。
   \end{itemize}
 \end{itemize}
-
-
-\subsection{文獻總結與研究方向}
-研究缺口、本研究貢獻。
-
 
 \section{相關使用技術介紹}
 \subsection{深度強化學習核心演算法 — Soft Actor-Critic (SAC)}
@@ -312,13 +335,15 @@ SAC 演算法有以下優點：
 
 \subsection{Unity3D 開發引擎}
 
-Unity3D（以下簡稱 Unity）是一款跨平台的即時 3D 開發引擎，廣泛應用於遊戲開發、虛擬實境（VR）、擴增實境（AR）、模擬器以及互動式應用。Unity 的核心特點包括：
+Unity3D（以下簡稱 Unity）是一款跨平台的即時 3D 開發引擎，廣泛應用於遊戲開發、虛擬實境（VR）、擴增實境（AR）、模擬器以及互動式應用。
+
+Unity 的核心特點包括：
 
 \begin{itemize}
     \item \textbf{跨平台支援}：開發者可以一次編寫程式碼，將應用部署到 Windows、MacOS、iOS、Android、WebGL、PlayStation、Xbox 等多種平台。
     \item \textbf{可視化編輯器}：提供直觀的場景設計與資源管理介面，方便開發者進行場景佈置、動畫製作與物理模擬。
     \item \textbf{C\# 腳本語言}：使用 C\# 編寫遊戲邏輯與互動行為，並支持與外部系統進行資料交換。
-    \item \textbf{豐富的資源與插件}：Unity 提供官方資源商店（Asset Store），開發者可快速取得模型、材質、插件及範例專案，加速開發流程。
+    \item \textbf{豐富的資源與插件}：Unity 提供官方資源商店，開發者可快速取得模型、材質、插件及範例專案，加速開發流程。
 \end{itemize}
 
 由於 Unity 支援物理模擬、碰撞檢測、光影渲染以及高自由度場景控制，因此除了遊戲開發，Unity 也被廣泛應用於機器人模擬、數位孿生、教育訓練與科研領域。
@@ -352,7 +377,7 @@ ML-Agents 套件的引入，使 Unity 不僅可以用於互動式模擬，也可
 
 
 \subsection{Crest 海洋環境模擬套件}
-Crest 是一款專為 Unity3D 開發的高品質海洋渲染與模擬插件，用於生成逼真的水面效果和動態海洋環境。它廣泛應用於遊戲開發、虛擬現實（VR）、模擬器以及互動式應用中，能夠提供高度真實的水面視覺效果和物理互動。
+Crest 是一款專為 Unity3D 開發的高品質海洋渲染與模擬插件，用於生成逼真的水面效果和動態海洋環境。它廣泛應用於遊戲開發、虛擬現實、模擬器以及互動式應用中，能夠提供高度真實的水面視覺效果和物理互動。
 
 \subsubsection{核心特點}
 \begin{itemize}
@@ -378,7 +403,7 @@ Crest 以其高品質渲染、動態物理交互及可擴展性，成為 Unity �
 \subsection{硬體設備}
 本研究的實驗電腦與核心硬體規格如下：
 \begin{itemize}
-    \item \textbf{GPU}：RTX-4070
+  	\item \textbf{GPU}：RTX-4070
 \end{itemize}
 
 \subsection{軟體環境}
@@ -400,30 +425,32 @@ Crest 以其高品質渲染、動態物理交互及可擴展性，成為 Unity �
 \end{itemize}
 
 \subsection{系統架構設計}
-本研究系統架構設計包含環境架構與感測器模擬設定，實驗流程分為兩個主要階段：訓練階段與模擬測試階段。
+本研究系統架構設計包含環境架構與感測器模擬設定，實驗流程分為兩個主要階段：「訓練階段」與「模擬測試階段」。
 
 \subsubsection{實驗架構設計}
-本研究的實驗流程分為「訓練階段」與「模擬測試階段」兩部分。首先，在訓練階段中，系統將環境設置為訓練模式，並建立一個具備隨機障礙物與「殭屍船」的模擬場景。我們會使用單一代理人訓練的方式，透過深度強化學習進行訓練，學習導航與避障策略，以確保其能在複雜的海況下保持穩定航行並避免碰撞。
-
+首先，在訓練階段中，系統將環境設置為訓練模式，並建立一個具備隨機障礙物與「殭屍船」的模擬場景。我們會使用單一代理人訓練的方式，透過深度強化學習進行訓練，學習導航與避障策略，以確保其能在複雜的海況下保持穩定航行並避免碰撞。
+\\ \par
 接著，在模擬測試階段，系統將環境切換為模擬模式，並於場景中部署多艘自主船舶，這些船舶均掛載前一階段所完成的訓練模型。在這個環境中，我們移除了殭屍船，並引入遇難者系統以生成需要救援的目標，搭配風浪與障礙物，重現真實的救援搜尋場景。船舶群集在此階段能同時執行搜救任務，展現協作與分工行為。於此過程中，系統持續記錄各項效能指標數據，以供後續統計與分析之用。
-
+\\ \par
 最後，為確保結果的穩定性與可靠性，本研究採取重複模擬的方式，於相同或不同環境條件下多次執行實驗，並蒐集大量數據進行比較與討論，從而驗證模型再實際應用中的可靠性與效能。
-
-\newpage
 
 \subsubsection{環境系統架構}
 
-\textbf{訓練環境}
-\begin{center}
-\includegraphics[scale=0.5]{image/TrainingArchitecture.png}
-\end{center}
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.5]{image/TrainingArchitecture.png}
+    \caption{訓練環境架構示意圖}
+    \label{fig:training_env}
+\end{figure}
 
 \newpage
 
-\textbf{模擬救援環境}
-\begin{center}
-\includegraphics[scale=0.5]{image/SimulationArchitecture.png}
-\end{center}
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.5]{image/SimulationArchitecture.png}
+    \caption{模擬救援環境架構示意圖}
+    \label{fig:simulation_env}
+\end{figure}
 
 \begin{itemize}
 	 \item \textbf{中央控制系統 (Central Control System)}
@@ -433,7 +460,7 @@ Crest 以其高品質渲染、動態物理交互及可擴展性，成為 Unity �
 	
 	 \item \textbf{船舶管理系統 (Ship Manager System)}
 	\begin{itemize}
-	    \item \textbf{殭屍船 (Zombie Boat)}：配備隨機動作選擇器與動作模組，作為訓練模式的虛擬代理。
+	    \item \textbf{殭屍船 (Zombie Boat)}：配備隨機動作選擇器與動作模組，作為訓練模式中的虛擬代理。
 	    \item \textbf{智能船 (Agent Boat)}：訓練後的智能代理，配備射線感測器、雷達感測器、攝影機、神經網路與動作模組。
 	    \item \textbf{船舶資料管理器 (Ships Data Manager)}：統一管理兩種船舶資料，例如當前位置、航向等。
 	\end{itemize}
@@ -464,7 +491,7 @@ Crest 以其高品質渲染、動態物理交互及可擴展性，成為 Unity �
 	
 	 \item \textbf{系統與模組間的相互關係}
 	\begin{itemize}
-	    \item 船舶管理系統提供障礙物管理系統資訊，避免障礙物生成位置過於靠近船隻。
+	    \item 船舶管理系統與障礙物管理系統互相溝通，以避免障礙物生成的位置過於靠近船隻。
 	    \item 波浪系統影響船舶管理系統中船隻的物理特性。
 	    \item 波浪系統影響障礙物管理系統中障礙物的物理特性。
 	    \item 風力系統影響多個系統中各個物件的物理特性。
@@ -514,7 +541,7 @@ Crest 以其高品質渲染、動態物理交互及可擴展性，成為 Unity �
 
 \subsubsection{單一落水點快速救援}
 這個情景用來模擬單一人員落海的情況，例如郵輪乘客落海、近岸游泳者被離岸流捲走、或是小型漁船翻覆導致單人落水等情景。該情境強調時間的敏感性及位置的不確定性，船隊需要經過仔細的搜尋，在最快的時間內定位落水的人員，並進行施救。
-
+\\ \par
 在這個情景下，我們使用以下方法設定我們的環境：
 \begin{itemize}
     \item 遇難者定位：位置不明，只知道大概的範圍。
@@ -536,7 +563,7 @@ Crest 以其高品質渲染、動態物理交互及可擴展性，成為 Unity �
 
 \subsubsection{大範圍隨機搜尋任務}
 此情景用來模擬在大面積海域中進行隨機分布的搜救任務，例如海上船舶遇難、飛機海面迫降等等。該情境強調搜尋的覆蓋範圍與船體之間的配合，船隊需要再目標數量與位置不明確的情況下，盡可能的提高搜尋效率與範圍覆蓋率，同時也要降低碰撞的風險。
-
+\\ \par
 在這個情景下，我們使用以下的方法設定模擬環境：
 \begin{itemize}
     \item 目標分布：多個目標隨機生成於整個搜索區域，位置與數量隨機。
@@ -595,6 +622,24 @@ Crest 以其高品質渲染、動態物理交互及可擴展性，成為 Unity �
 
 \section{結論與未來發展}
 
+\subsection{研究總結}
+本專題針對「海上搜救」所面臨的廣域範圍、高不確定性等挑戰，提出並實作一套「智慧化船舶群集搜救系統」。核心成果如下：
+\begin{itemize}
+    \item \textbf{建立擬真測試平台}：本專案以 Unity 為主要的開發環境，並結合 Crest 海洋模擬套件，模擬真實風浪與海象。這個組合能夠支援大範圍的海洋場景，並兼顧視覺化與即時模擬的效能，非常適合用於實現海上搜救場景的模擬。
+    \item \textbf{開發自主搜救船隻}：使用 ML-Agents 與 DQN 演算法訓練出具備自主導航、避障能力的搜救船隻。
+    \item \textbf{設計群集協同策略}：針對多艘船舶進行協同搜尋與任務分配，提升搜救效率。
+    \item \textbf{驗證可行性}：透過模擬測試驗證系統在不同海象及搜救場景下的可行性。
+\end{itemize}
+
+\subsection{專題成果與限制}
+% 在此補充系統的成果與目前限制
+
+\subsection{未來研究方向}
+% 在此補充後續可進一步探討的方向
+
+\subsection{可行的解決方案}
+% 在此補充對目前限制的改善方案或建議
+
 % 參考文獻
 \begin{thebibliography}{9}
 
@@ -616,6 +661,16 @@ Oways,
 \textit{Oways Online},
 n.d.
 [Online]. Available: \url{https://owaysonline.com/iamsar-search-patterns/}
+
+\bibitem{rybchak2024}
+Z.~Rybchak and M.~Kopylets,
+``Comparative Analysis of DQN and PPO Algorithms in UAV Obstacle Avoidance 2D Simulation,''
+2024.
+
+\bibitem{greenberg}
+V.~Greenberg and C.~Hernandez,
+``Autonomous Drone Navigation for First Response,''
+n.d.
 
 \bibitem{Drew2021}
 D.~S.~Drew,
