@@ -679,8 +679,29 @@ $d_{\text{succ}}$ & 5，成功閾值 \\
         \item 成功：任一船隻找到落水者並標記，在 time-out 前完成。
         \item 終止：超過 time-out、發生嚴重碰撞等。
     \end{itemize}
-    \item 示意圖 (括號一下)
+    \item 示意圖
+	\begin{figure}[h]
+	    \centering
+	    \begin{minipage}[t]{0.55\textwidth}
+	        \vspace{1cm} 
+	        \textbf{示意圖說明：}\\
+	        此圖展示了模擬情況下進行單一落水點快速救援的情境。\\
+	        下方排列四艘船隻，模擬開始時會開始向前掃描，於系統訂定的搜尋範圍內找尋落水人員。上方的亮點為落水人員，等待被施救。\\
+		此圖僅為示意圖，真實的模擬情境船隻間距會更寬廣一些，落水人員不會距離船隊這麼近。
+	    \end{minipage}
+	    \hfill
+	    % 右側圖片
+	    \begin{minipage}[t]{0.4\textwidth}
+	        \vspace{0pt}
+	        \centering
+	        \includegraphics[width=\textwidth]{image/SingleDemo.png}
+	        \caption{單一搜尋示意圖}
+	    \end{minipage}
+	\end{figure}
+
 \end{itemize}
+
+\newpage
 
 \subsubsection{大範圍隨機搜尋任務}
 此情景用來模擬在大面積海域中進行隨機分布的搜救任務，例如海上船舶遇難、飛機海面迫降等等。該情境強調搜尋的覆蓋範圍與船體之間的配合，船隊需要在目標數量與位置不明確的情況下，盡可能的提高搜尋效率與範圍覆蓋率，同時也要降低碰撞的風險。
@@ -702,8 +723,26 @@ $d_{\text{succ}}$ & 5，成功閾值 \\
         \item 成功：船隻找到所有落水人員並標記，在 time-out 前完成。
         \item 終止：超過 time-out、發生嚴重碰撞等。
     \end{itemize}
-    \item 示意圖 (括號一下)
+    \item 示意圖
 \end{itemize}
+\begin{figure}[h]
+    \begin{minipage}[t]{0.55\textwidth}
+        \vspace{1cm} 
+        \textbf{示意圖說明：}\\
+	右圖呈現了模擬環境下進行大範圍隨機搜尋任務的情境。\\
+	此情境模擬大型船難事故，乘客隨機散落於海面各處，船隊則採用與單一落水點相同的平行線搜尋策略，逐一搜尋並標記遇難者，以便救援人員後續施救。
+	圖中僅示範單一船舶的視角，可清楚觀察到海面上分布著多名待救援人員。
+    \end{minipage}
+    \hspace{2em}
+    \begin{minipage}[t]{0.45\textwidth}
+        \vspace{0pt}
+        \centering
+        \includegraphics[width=\textwidth]{image/MultiDemo.png}
+        \caption{大範圍搜尋示意圖}
+    \end{minipage}
+\end{figure}
+
+\newpage
 
 \subsubsection{任務效能評估}
 有了以上兩種情境後，我們根據我們的需求制定了一系列的評估指標來量化船隊在搜尋任務中的表現。主要指標包括：
