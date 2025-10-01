@@ -14,6 +14,7 @@
 \usepackage{amssymb}
 \usepackage{cite}
 \usepackage{fontspec}
+\usepackage{multirow}
 
 \setmainfont{Times New Roman}
 
@@ -86,7 +87,7 @@
 % 摘要
 \vspace*{0.3\textheight}
 \begin{abstract}
-本研究提出一套「智慧化AI船舶群集搜救系統」，旨在改善海上的搜救方式。傳統的搜救常常面臨海象險惡、作業風險高及搜尋範圍廣闊等挑戰，很容易錯過黃金救援時間，且存在高危險性。本研究希望透過無人船群集的系統化應用，透過現代 AI 技術進行更有效率的搜尋，以降低搜救人員傷亡風險，同時提升大範圍搜尋的效率，解決現有搜救作業的困難。
+本研究提出一套「智慧化AI船舶群集搜救規劃系統」，旨在改善海上的搜救方式。傳統的搜救常常面臨海象險惡、作業風險高及搜尋範圍廣闊等挑戰，很容易錯過黃金救援時間，且存在高危險性。本研究希望透過無人船群集的系統化應用，透過現代 AI 技術進行更有效率的搜尋，以降低搜救人員傷亡風險，同時提升大範圍搜尋的效率，解決現有搜救作業的困難。
 \par
 為因應上述挑戰，本系統以無人船群集協作為核心，透過強化學習演算法規劃搜救路徑，並可根據海流、風向等環境因素即時調整搜尋方向。由於缺乏實體船舶作為驗證平台，本研究採用 Unity 模擬環境進行系統建構與實驗，並針對單人與多人落水情境進行測試，驗證其可行性。
 \par
@@ -139,7 +140,7 @@
 本系統整合以下技術，以實現智慧化船舶群集搜救模擬與訓練：
 
 \begin{itemize}
-	\item \textbf{Soft Actor-Critic (SAC)}：基於最大熵強化學習的演算法，透過 actor-critic 架構、雙 Q 網路與熵正則項，同時追求回報最大化與策略多樣性，提供穩定且高效的策略學習\cite{SAC}。
+	\item \textbf{Soft Actor-Critic (SAC)}：基於最大熵強化學習的演算法，透過 actor-critic 架構、雙 Q 網路與熵正則項，同時追求回報最大化與策略多樣性，提供穩定且高效的策略學習 \cite{Atari}\cite{SAC}。
 	\item \textbf{Unity3D}：跨平台 3D 開發引擎，支援物理模擬、場景可視化與高自由度控制，適合構建模擬環境。
 	\item \textbf{ML-Agents}：將 Unity 環境轉化為智能體訓練場域，支援強化學習、模仿學習與自我對弈，訓練完成後可匯出模型直接部署\cite{MLAgentRepo}。
 	 \item \textbf{Crest 海洋套件}：提供高品質水面渲染與波浪模擬，支援物理互動與光影效果，增強船舶模擬的真實感與環境互動性\cite{CrestIntro}。
@@ -275,7 +276,7 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
 \subsubsection{核心演算法應用}
 \begin{itemize}
   \item \textbf{DQN（Deep Q-Network）}：為傳統 Q-Learning 的延伸，利用深度神經網路來近似 Q-Value，解決傳統 Q-Table 無法應付大型或連續狀態空間的問題\cite{DQN}。
-  \item \textbf{SAC（Soft Actor-Critic）}：基於 Actor-Critic 的演算法，融合最大熵強化學習，在學習高回報策略的同時，鼓勵策略保持隨機性以提升探索能力，適合高維度與連續動作空間\cite{SAC}。
+  \item \textbf{SAC（Soft Actor-Critic）}：基於 Actor-Critic 的演算法，融合最大熵強化學習，在學習高回報策略的同時，鼓勵策略保持隨機性以提升探索能力，適合高維度與連續動作空間\cite{Atari}\cite{SAC}。
 \end{itemize}
 
 \paragraph{案例分析}
@@ -313,34 +314,32 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
   \end{itemize}
 \end{itemize}
 
-\newpage
-
 \section{系統設計與技術實作}
 
-\subsection{硬體設備}
-本研究的實驗電腦與核心硬體規格如下：
-\begin{itemize}
-	\item \textbf{CPU}：i5-12400
-  	\item \textbf{GPU}：RTX-4070
-\end{itemize}
+本研究的系統配置與使用工具如表 \ref{tab:system_config} 所示。
 
-\subsection{軟體環境}
-實驗所使用的作業系統、開發環境與版本控制工具如下：
-\begin{itemize}
-    \item \textbf{作業系統 (OS)}：Windows 11
-    \item \textbf{Python}：3.10.11
-    \item \textbf{Unity}：6000.0.39f1
-    \item \textbf{Unity DevOps Version Control}：11.0
-    \item \textbf{CUDA}：12.1
-    \item \textbf{PyTorch}：2.2.1
-\end{itemize}
-
-\subsection{使用套件與框架}
-本研究使用的套件與框架如下：
-\begin{itemize}
-    \item \textbf{Crest}：3.0.2
-    \item \textbf{ML-Agents}：3.0.0
-\end{itemize}
+\begin{table}[h]
+\centering
+\caption{系統配置與使用工具}
+\label{tab:system_config}
+\begin{tabular}{lll}
+\hline
+\textbf{類別}     & \textbf{項目}                    & \textbf{規格/版本}  \\ \hline
+\multirow{2}{*}{硬體設備} 
+                  & CPU                              & i5-12400            \\
+                  & GPU                              & RTX-4070            \\ \hline
+\multirow{6}{*}{軟體環境} 
+                  & 作業系統 (OS)                    & Windows 11          \\
+                  & Python                           & 3.10.11             \\
+                  & Unity                            & 6000.0.39f1         \\
+                  & Unity DevOps Version Control     & 11.0                \\
+                  & CUDA                             & 12.1                \\
+                  & PyTorch                          & 2.2.1               \\ \hline
+\multirow{2}{*}{套件與框架} 
+                  & Crest                            & 3.0.2               \\
+                  & ML-Agents                        & 3.0.0               \\ \hline
+\end{tabular}
+\end{table}
 
 \newpage
 
@@ -450,12 +449,14 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
     \item 剩餘步數 (1 維)：記錄距離「每回訓練最大限制移動步數」的剩餘步數。
 \end{itemize}
 
-\paragraph{3. 感測器資料}
+\paragraph{3. 感測器資料 (2n + 4 維)}
 \begin{itemize}
-    \item 障礙物感測器 (2n 維)：將船周圍環境分為 n 個感測區段，每個區段提供距離最小障礙物的角度與距離。
+	\item 障礙物感測器 (2n 維)：將船周圍環境分為 n 個感測區段，每個區段提供距離最小障礙物的角度與距離。
+	\item 海流感測 (2 維)：
+	\item 風向感測 (2 維)：
 \end{itemize}
 
-\paragraph{4. 其他船隻資訊}
+\paragraph{4. 其他船隻資訊 (6m 維)}
 \begin{itemize}
     \item 鄰近船隻狀態 (6m 維)：對每艘鄰近船隻記錄相對方位角正弦/餘弦、距離、航向角正弦/餘弦、徑向速度。
 \end{itemize}
@@ -463,11 +464,76 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
 \paragraph{5. 總結}
 觀測空間總維度為：
 \[
-32 + 2n + 6m \text{ 維}
+36 + 2n + 6m \text{ 維}
 \]
-其中 n 為感測區段數，m 為鄰近船隻數量。例如 n=8, m=3 時，總觀測空間為 48 維。
+其中 n 為感測區段數，m 為鄰近船隻數量。例如 n=8, m=3 時，總觀測空間為 52 維。
 
 \newpage
+
+\subsubsection{行動空間設計}
+代理人的行動空間包含兩個連續控制維度：
+
+\paragraph{1. 油門控制 (Throttle, 1 維)}
+\begin{itemize}
+\item 範圍：[-1.0, 1.0]，正值向前推進、負值向後倒退，絕對值對應推進力強度
+\item 功能：精細調整船隻加速度，實現平滑的速度控制
+\end{itemize}
+
+\paragraph{2. 舵向控制 (Steer, 1 維)}
+\begin{itemize}
+\item 範圍：[-1.0, 1.0]，正值向右轉、負值向左轉，絕對值對應轉向力度
+\item 功能：流暢調整航向，適應複雜的導航場景
+\end{itemize}
+
+\paragraph{3. 總結}
+行動空間總維度為 2 維（油門 + 舵向）。此連續控制設計使代理人能夠同時控制速度與方向、達成精細的船隻控制，並模擬真實船隻操作，提升訓練策略的實用性。
+
+\subsubsection{神經網路架構設計}
+
+本研究的神經網路架構採用多模態輸入設計，結合視覺資訊與數值觀察，透過SAC演算法實現船舶的自主導航與避障能力。整體架構可分為輸入處理、特徵融合與決策輸出三個主要階段。
+
+\vspace*{0.5cm}
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{1\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{image/ModelArch.png}
+        \caption{模型架構設計}
+    \end{minipage}
+\end{figure}
+
+\paragraph{輸入處理階段}
+\begin{itemize}
+	\item \textbf{視覺輸入處理}：照相機提供$84\times84\times3$的RGB影像輸入,經由Nature CNN進行視覺特徵提取。Nature CNN採用三層卷積結構：第一層使用32個$8\times8$卷積核，步長為4，輸出$20\times20\times32$；第二層使用64個$4\times4$卷積核，步長為2，輸出$9\times9\times64$；第三層使用64個$3\times3$卷積核，步長為1，輸出$7\times7\times64$。經展平處理後得到3,136維特徵向量，再通過全連接層壓縮至512維視覺特徵向量。
+	\item \textbf{數值觀察處理}：數值觀察空間包含52維特徵，涵蓋目標資訊（3維）、船隻運動狀態（11維）、感測器資料（20維）及其他船隻資訊（18維）。所有數值特徵經過正規化處理，使用運行平均值與標準差進行標準化：
+\end{itemize}
+
+\begin{equation}
+\text{normalized\_value} = \frac{\text{original\_value} - \text{running\_mean}}{\sqrt{\text{running\_variance} + 10^{-8}}}
+\end{equation}
+
+\paragraph{特徵融合階段}
+
+視覺特徵向量（512維）與標準化數值向量（52維）透過連接操作融合為560維的綜合特徵向量，作為SAC演算法的輸入狀態表示。
+
+\paragraph{SAC神經網路架構}
+\begin{itemize}
+
+	\item \textbf{Actor網路（策略網路）}：輸入560維融合特徵，經過三層隱藏層處理，每層包含256個神經元並使用ReLU激活函數。輸出層產生2維連續動作向量，分別控制船隻的油門（throttle）與轉向（steer），動作範圍為$[-1, 1]$。
+	
+	\item \textbf{Critic網路（價值網路）}：採用 twin Q-networks 架構\cite{Atari}提升訓練穩定性。每個 Q-networks 接收560維狀態特徵與2維動作輸入，總輸入維度為562。網路結構與 Actor 相同，使用三層256個神經元的隱藏層，輸出單一Q值估計。
+	
+	\item \textbf{目標網路與熵正則化}：系統維護Actor與Critic的目標網路副本，透過軟更新機制（$\tau=0.01$）逐步同步參數。SAC演算法引入熵正則化項，初始熵係數設為0.1，透過自動調整平衡探索與利用。
+\end{itemize}
+
+\paragraph{網路訓練配置}
+
+訓練過程採用Adam optimizer，學習率設為$5\times10^{-5}$，批次大小256，經驗回放緩衝區容量300,000。折扣因子$\gamma$設為0.99，最大訓練步數為400,000步，時間範圍設定為300步。
+
+\paragraph{架構特點總結}
+
+本架構的核心特點包括：多模態融合設計能有效結合視覺與數值資訊；Nature CNN專門處理空間視覺特徵；數值正規化確保不同尺度特徵的平衡學習；SAC演算法的最大熵特性平衡探索與利用；twin Q-networks 設計提升價值估計穩定性。整體參數量約162萬個，能夠在複雜海洋環境中實現穩定的自主導航性能。
 
 \subsubsection{獎勵函數設計}
 
@@ -591,53 +657,6 @@ $d_{\text{succ}}$ & 5，成功閾值 \\
 \end{table}
 
 \newpage
-
-\subsubsection{神經網路架構設計}
-
-本研究的神經網路架構採用多模態輸入設計，結合視覺資訊與數值觀察，透過SAC演算法實現船舶的自主導航與避障能力。整體架構可分為輸入處理、特徵融合與決策輸出三個主要階段。
-
-\vspace*{0.5cm}
-
-\begin{figure}[h]
-    \centering
-    \begin{minipage}[t]{1\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{image/ModelArch.png}
-        \caption{實驗階段}
-    \end{minipage}
-\end{figure}
-
-\paragraph{輸入處理階段}
-\begin{itemize}
-	\item \textbf{視覺輸入處理}：照相機提供$84\times84\times3$的RGB影像輸入,經由Nature CNN進行視覺特徵提取。Nature CNN採用三層卷積結構：第一層使用32個$8\times8$卷積核，步長為4，輸出$20\times20\times32$；第二層使用64個$4\times4$卷積核，步長為2，輸出$9\times9\times64$；第三層使用64個$3\times3$卷積核，步長為1，輸出$7\times7\times64$。經展平處理後得到3,136維特徵向量，再通過全連接層壓縮至512維視覺特徵向量。
-	\item \textbf{數值觀察處理}：數值觀察空間包含48維特徵，涵蓋目標資訊（3維）、船隻運動狀態（11維）、感測器資料（16維）及其他船隻資訊（18維）。所有數值特徵經過正規化處理，使用運行平均值與標準差進行標準化：
-\end{itemize}
-
-\begin{equation}
-\text{normalized\_value} = \frac{\text{original\_value} - \text{running\_mean}}{\sqrt{\text{running\_variance} + 10^{-8}}}
-\end{equation}
-
-\paragraph{特徵融合階段}
-
-視覺特徵向量（512維）與標準化數值向量（48維）透過連接操作融合為560維的綜合特徵向量，作為SAC演算法的輸入狀態表示。
-
-\paragraph{SAC神經網路架構}
-\begin{itemize}
-
-	\item \textbf{Actor網路（策略網路）}：輸入560維融合特徵，經過三層隱藏層處理，每層包含256個神經元並使用ReLU激活函數。輸出層產生2維連續動作向量，分別控制船隻的油門（throttle）與轉向（steer），動作範圍為$[-1, 1]$。
-	
-	\item \textbf{Critic網路（價值網路）}：採用 twin Q-networks 架構提升訓練穩定性。每個 Q-networks 接收560維狀態特徵與2維動作輸入，總輸入維度為562。網路結構與 Actor 相同，使用三層256個神經元的隱藏層，輸出單一Q值估計。
-	
-	\item \textbf{目標網路與熵正則化}：系統維護Actor與Critic的目標網路副本，透過軟更新機制（$\tau=0.01$）逐步同步參數。SAC演算法引入熵正則化項，初始熵係數設為0.1，透過自動調整平衡探索與利用。
-\end{itemize}
-
-\paragraph{網路訓練配置}
-
-訓練過程採用Adam optimizer，學習率設為$5\times10^{-5}$，批次大小256，經驗回放緩衝區容量300,000。折扣因子$\gamma$設為0.99，最大訓練步數為400,000步，時間範圍設定為300步。
-
-\paragraph{架構特點總結}
-
-本架構的核心特點包括：多模態融合設計能有效結合視覺與數值資訊；Nature CNN專門處理空間視覺特徵；數值正規化確保不同尺度特徵的平衡學習；SAC演算法的最大熵特性平衡探索與利用；twin Q-networks 設計提升價值估計穩定性。整體參數量約162萬個，能夠在複雜海洋環境中實現穩定的自主導航性能。
 
 \section{實驗設計與結果分析}
 
@@ -1078,6 +1097,12 @@ Zhang , A., Wang, W., Bi, W., \& Huang, Z.
 (2024). 
 A Path Planning Method Based on Deep Reinforcement Learning for AUV in Complex Marine Environment. Ocean Engineering, 313(1), Article 119354. 
 \url{https://doi.org/10.1016/j.oceaneng.2024.119354}
+
+\bibitem{Atari}
+Mnih, V., Kavukcuoglu, K., Silver, D., Graves, A., Antonoglou, I., Wierstra, D., \& Riedmiller, M. 
+(2013). 
+Playing Atari with deep reinforcement learning. arXiv. 
+\url{https://doi.org/10.48550/arXiv.1312.5602}
 
 \bibitem{SAC}
 晴晴\_amanda. 
