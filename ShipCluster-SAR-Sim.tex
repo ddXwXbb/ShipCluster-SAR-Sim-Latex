@@ -86,9 +86,9 @@
 % 摘要
 \vspace*{0.3\textheight}
 \begin{abstract}
-本研究提出一套「智慧化AI船舶群集搜救系統」，旨在改善海上的搜救方式。傳統的搜救常常面臨海象險惡、作業風險高及搜尋範圍廣闊等挑戰，很容易錯過黃金救援時間，且存在高危險性。本研究希望透過無人船的應用，降低搜救人員傷亡風險，同時提升大範圍搜尋的效率，解決現有搜救作業的困難。
+本研究提出一套「智慧化AI船舶群集搜救系統」，旨在改善海上的搜救方式。傳統的搜救常常面臨海象險惡、作業風險高及搜尋範圍廣闊等挑戰，很容易錯過黃金救援時間，且存在高危險性。本研究希望透過無人船群集的系統化應用，透過現代 AI 技術進行更有效率的搜尋，以降低搜救人員傷亡風險，同時提升大範圍搜尋的效率，解決現有搜救作業的困難。
 \par
-為因應上述挑戰，本系統以無人船群集協作為核心，透過演算法規劃搜救路徑，並可根據海流、風向等環境因素即時調整搜尋方向。由於缺乏實體船舶作為驗證平台，本研究採用 Unity 模擬環境進行系統建構與實驗，並針對單人與多人落水情境進行測試，驗證其可行性。
+為因應上述挑戰，本系統以無人船群集協作為核心，透過強化學習演算法規劃搜救路徑，並可根據海流、風向等環境因素即時調整搜尋方向。由於缺乏實體船舶作為驗證平台，本研究採用 Unity 模擬環境進行系統建構與實驗，並針對單人與多人落水情境進行測試，驗證其可行性。
 \par
 實驗結果顯示，本系統在單一落水搜救情境下達到 82\%  的搜尋成功率，相較於傳統人工搜尋僅約 50\%  的成功率有顯著提升；在多人落水的情況下，系統能搜尋到 78\%  的落水人員。此外，針對因風向影響的落水人員移動，本系統的預測準確率達 81\%。
 \par
@@ -108,17 +108,17 @@
 \section{緒論}
 
 \subsection{研究背景與動機}
-海洋覆蓋地球表面超過七成，是全球貿易、資源開發與休閒活動的核心場域。然而，隨著海上交通與作業日益頻繁，船舶事故、惡劣氣候與人員落水的風險持續上升。一旦發生事故，搜救（Search and Rescue, SAR）行動成為攸關人命的即時挑戰，其中「救援時間」決定了受困者的生存率。
+海洋覆蓋地球表面超過七成，是全球貿易、資源開發與休閒活動的核心場域。然而，隨著海上交通與作業日益頻繁，船舶事故、惡劣氣候與人員落水的風險持續上升。一旦發生事故，搜救（Search and Rescue, SAR）行動成為攸關人命的即時挑戰，其中「救援時間」決定了受困者的生存率\cite{NOAA}。
 
-傳統搜救模式仰賴人員經驗與指揮調度，在大範圍海域與高風險環境下常受限於人力與效率。隨著人工智慧（AI）、自主系統（Autonomous Systems）與高擬真模擬技術的成熟，發展基於智慧化與自主化的搜救系統已成為突破現有困境的契機。自主船舶群集可藉由耐航性、即時協作與精確導航，提升搜救任務的速度與覆蓋範圍，進而增加受困人員的獲救機率。本研究即在此背景下展開。
+傳統搜救模式仰賴人員經驗與指揮調度，在大範圍海域與高風險環境下常受限於人力與效率。隨著人工智慧（AI）、自主系統（Autonomous Systems）與高擬真模擬技術的成熟，發展基於智慧化與自主化的搜救系統已成為突破現有困境的契機。自主船舶群集可藉由耐航性、即時協作與精確導航，提升搜救任務的速度與覆蓋範圍，進而增加受困人員的獲救機率\cite{GroupMobile}。本研究即在此背景下展開。
 
 \subsection{問題陳述}
-雖然自主船舶與強化學習的應用展現巨大潛力，但在搜救場景中仍面臨多重挑戰：
+雖然自主船舶與強化學習的應用具有強大的潛力，能夠在大多任務中提升效率與反應速度，但在搜救場景中仍面臨多重挑戰\cite{KilicChallenge}\cite{KilicRL}\cite{NOAA}：
 
 \begin{enumerate}
 \item \textbf{搜索效率不足}：傳統搜索在大範圍海域下難以兼顧效率與覆蓋率。
-\item \textbf{環境動態與不確定性}：風浪與洋流使船隻航行與感測受干擾，增加搜尋難度。
-\item \textbf{群集協同複雜性}：多艘船隻需避免搜尋範圍重疊、確保安全並即時共享資訊。
+\item \textbf{環境動態與不確定性}：風浪與洋流使船隻航行與感測受干擾，增加搜尋難度\cite{IAMSAR2008}。
+\item \textbf{群集協同複雜性}：多艘船隻需避免搜尋範圍重疊、確保安全並即時共享資訊\cite{IAMSAR2008}。
 \item \textbf{時間壓力與決策挑戰}：有限時間內需快速分配資源並做出最佳判斷，錯誤可能導致錯失救援時機。
 \end{enumerate}
 
@@ -139,10 +139,10 @@
 本系統整合以下技術，以實現智慧化船舶群集搜救模擬與訓練：
 
 \begin{itemize}
-	\item \textbf{Soft Actor-Critic (SAC)}：基於最大熵強化學習的演算法，透過 actor-critic 架構、雙 Q 網路與熵正則項，同時追求回報最大化與策略多樣性，提供穩定且高效的策略學習。
+	\item \textbf{Soft Actor-Critic (SAC)}：基於最大熵強化學習的演算法，透過 actor-critic 架構、雙 Q 網路與熵正則項，同時追求回報最大化與策略多樣性，提供穩定且高效的策略學習\cite{SAC}。
 	\item \textbf{Unity3D}：跨平台 3D 開發引擎，支援物理模擬、場景可視化與高自由度控制，適合構建模擬環境。
-	\item \textbf{ML-Agents}：將 Unity 環境轉化為智能體訓練場域，支援強化學習、模仿學習與自我對弈，訓練完成後可匯出模型直接部署。
-	 \item \textbf{Crest 海洋套件}：提供高品質水面渲染與波浪模擬，支援物理互動與光影效果，增強船舶模擬的真實感與環境互動性。
+	\item \textbf{ML-Agents}：將 Unity 環境轉化為智能體訓練場域，支援強化學習、模仿學習與自我對弈，訓練完成後可匯出模型直接部署\cite{MLAgentRepo}。
+	 \item \textbf{Crest 海洋套件}：提供高品質水面渲染與波浪模擬，支援物理互動與光影效果，增強船舶模擬的真實感與環境互動性\cite{CrestIntro}。
 \end{itemize}
 
 \subsection{實驗方法與結果}
@@ -169,7 +169,7 @@
 \subsection{海上搜救相關研究}
 
 \subsubsection{傳統海上搜救方法}
-傳統的海上搜救方法在《IAMSAR 操作手冊》\cite{IAMSAR2008} 中有明確規範，常見的類型有：
+傳統的海上搜救方法在《IAMSAR 操作手冊》\cite{IAMSAR2008}\cite{Oways} 中有明確規範，常見的類型有：
 \begin{itemize}
 	\item \textbf{Expanding square search（擴展方形搜尋）}
 	\begin{itemize}
@@ -215,18 +215,18 @@
 
 \subsubsection{傳統方法的限制與挑戰}
 \begin{itemize}
-  \item \textbf{安全風險}：傳統的搜救方式需要出動大量的人員與船舶，如在極端天候可能會造成額外的風險。
-  \item \textbf{人力與資源消耗}：以平行航線為例，雖然能夠覆蓋較大的範圍，但同時也需要使用大量的船舶及人員，而搜救成本也隨之增加。
-  \item \textbf{搜尋效率受限}：擴展正方形、扇形搜尋雖然成本相較為低廉，然而其搜尋範圍相對有限，並且在海流及海風的影響下，航線容易偏移，降低搜尋效率。
-  \item \textbf{時效性不足}：當目標位置未知且搜尋範圍過大，傳統的人工搜尋方法往往很難在黃金救援期間完成全面搜尋。
+  \item \textbf{安全風險}：傳統的搜救方式需要出動大量的人員與船舶，如在極端天候可能會造成額外的風險\cite{USCoastGuard}。
+  \item \textbf{人力與資源消耗}：以平行航線為例，雖然能夠覆蓋較大的範圍，但同時也需要使用大量的船舶及人員，而搜救成本也隨之增加\cite{KilicChallenge}。
+  \item \textbf{搜尋效率受限}：擴展正方形、扇形搜尋雖然成本相較為低廉，然而其搜尋範圍相對有限，並且在海流及海風的影響下，航線容易偏移，降低搜尋效率\cite{KilicChallenge}\cite{AiCoverage}。
+  \item \textbf{時效性不足}：當目標位置未知且搜尋範圍過大，傳統的人工搜尋方法往往很難在黃金救援期間完成全面搜尋\cite{AiCoverage}。
 \end{itemize}
 
 \subsubsection{技術發展}
-隨著科技進步，傳統搜救方式的限制逐漸被新技術所補足：
+隨著科技進步，傳統搜救方式的限制逐漸被新技術所補足\cite{Ennong}：
 \begin{itemize}
   \item \textbf{無人機}：具備高機動性，能在短時間內對大範圍的海域進行空中偵查。
   \item \textbf{自主船舶}：可執行長時間、低成本的搜尋，降低人員風險與油料消耗。使用群集作業可以補足平行航線搜尋的缺點，在維持大範圍的情況下同時減少搜尋成本。
-  \item \textbf{混和搜救系統}：結合有人、無人船舶及無人機，形成「立體化」的搜尋網路。有人單位可以集中精力於高價值決策或特殊任務，無人單位負責長時間及大範圍的搜尋。
+  \item \textbf{混和搜救系統}：結合有人、無人船舶及無人機，形成「立體化」的搜尋網路。有人單位可以集中精力於高價值決策或特殊任務，無人單位負責長時間及大範圍的搜尋\cite{Survey}。
 \end{itemize}
 
 \subsection{自主船舶系統現代應用}
@@ -242,33 +242,33 @@
 \begin{itemize}
   \item Yara Birkeland：全球首艘全電動無人貨櫃船，展現大型自主船舶的商轉潛力\cite{Yara}。
   \item 日本 MEGURI 2040 計畫：推動多艘無人渡輪與貨船運行，測試長距離自主航行能力\cite{Meguri}。
-  \item 英國 Rolls-Royce、韓國現代重工：積極投入智慧船舶與自主航行技術。
+  \item 英國 Rolls-Royce、韓國現代重工：積極投入智慧船舶與自主航行技術\cite{Rolls}\cite{Hyundai}。
 \end{itemize}
 
 \subsection{深度強化學習於自主導航領域之研究}
 
 \subsubsection{傳統演算法與限制}
-在自主導航（Autonomous Navigation）領域中，傳統的路徑規劃方法如 A*、Dijkstra 與快速隨機樹（Rapidly-exploring Random Tree, RRT），一直是最為基礎且廣泛使用的演算法。然而，傳統演算法仍包含了許多限制：
+在自主導航（Autonomous Navigation）領域中，傳統的路徑規劃方法如 A*、Dijkstra 與快速隨機樹（Rapidly-exploring Random Tree, RRT），一直是最為基礎且廣泛使用的演算法。然而，傳統演算法仍包含了許多限制\cite{PathPlanning}：
 \begin{itemize}
-  \item 缺乏即時適應性：當環境發生變化（如動態障礙物、移動目標）時，需重新規劃路徑，反應速度不足。
-  \item 計算負擔大：在高維、複雜或大規模環境下，演算法的計算時間與記憶體需求急遽增加。
-  \item 難以處理不確定性：傳統規劃多依賴完整或靜態的環境資訊，在感測器噪音、動態障礙物或其他不確定因素下，效能顯著下降。
+  \item 缺乏即時適應性：當環境發生變化（如動態障礙物、移動目標）時，需重新規劃路徑，反應速度不足\cite{EnhancedPathPlanning}。
+  \item 計算負擔大：在高維、複雜或大規模環境下，演算法的計算時間與記憶體需求急遽增加\cite{SimulationHeuristic}。
+  \item 難以處理不確定性：傳統規劃多依賴完整或靜態的環境資訊\cite{EnhancingPathPlanning}，在感測器噪音、動態障礙物或其他不確定因素下，效能顯著下降。
 \end{itemize}
 
 因此，雖然傳統方法在靜態場景中表現穩健，但在動態且不確定的自主導航環境中，往往無法滿足即時決策與適應性需求，這正是深度強化學習（Deep Reinforcement Learning, DRL）開始受到重視的原因。
 
 
 \subsubsection{深度強化學習的突破}
-為克服傳統演算法在動態環境下的不足，深度強化學習（Deep Reinforcement Learning, DRL）成為自主導航研究中的重要突破。與 A*、Dijkstra、RRT 等需要完整環境模型並重新規劃的方式不同，DRL 採用 trial-and-error（嘗試錯誤）學習機制，透過與環境的交互不斷更新策略（policy），進而實現動態決策與即時反應。
+為克服傳統演算法在動態環境下的不足，深度強化學習（Deep Reinforcement Learning, DRL）成為自主導航研究中的重要突破。與 A*、Dijkstra、RRT 等需要完整環境模型並重新規劃的方式不同，DRL 採用 trial-and-error（嘗試錯誤）學習機制，透過與環境的交互不斷更新策略（policy），進而實現動態決策與即時反應\cite{DRL2018}。
 
 \paragraph{(1) 自主學習與即時決策}
-DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函數，結合深度神經網路的表徵能力，使智能體能在高維感知輸入（如 LiDAR、相機影像）下直接學習導航策略。這種方式無需依賴精確的地圖建模或完整環境資訊，而是透過即時觀測與回饋，逐步形成能適應不同情境的決策能力。
+DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函數，結合深度神經網路的表徵能力，使智能體能在高維感知輸入（如 LiDAR、相機影像）下直接學習導航策略。這種方式無需依賴精確的地圖建模或完整環境資訊，而是透過即時觀測與回饋，逐步形成能適應不同情境的決策能力\cite{DRLAutonomous}\cite{DRLBased}。
 
 \paragraph{(2) 處理動態與不確定性}
-相較於傳統演算法須頻繁重新規劃路徑，DRL 在訓練過程中即已接觸到各種動態障礙物與隨機擾動，因而具備在未知或變化環境中快速調整的能力。例如，當遇到突然出現的障礙物時，智能體能即時採取繞行或減速等動作，而不必從頭運算整條路徑。
+相較於傳統演算法須頻繁重新規劃路徑，DRL 在訓練過程中即已接觸到各種動態障礙物與隨機擾動，因而具備在未知或變化環境中快速調整的能力。例如，當遇到突然出現的障礙物時，智能體能即時採取繞行或減速等動作，而不必從頭運算整條路徑\cite{DRLAutonomous}\cite{PathPlanningMethod}。
 
 \paragraph{(3) 泛化與適應性}
-透過大量訓練資料與模擬環境，DRL 模型能學會在不同場景間泛化。例如，同一策略可在室內走廊、室外道路或不同地圖配置中應用，具備比傳統演算法更強的靈活性。這使得 DRL 特別適合應用於具有高度不確定性的場景，如自駕車或自主移動機器人。
+透過大量訓練資料與模擬環境，DRL 模型能學會在不同場景間泛化。例如，同一策略可在室內走廊、室外道路或不同地圖配置中應用，具備比傳統演算法更強的靈活性。這使得 DRL 特別適合應用於具有高度不確定性的場景，如自駕車或自主移動機器人\cite{DRLAutonomous}。
 \\ \par
 綜合而言，DRL 透過嘗試錯誤式的學習框架，彌補了傳統演算法在動態性、即時性與不確定性上的不足，為自主導航帶來全新的解決方案。這些優勢使其在自駕車、無人機以及服務型機器人等領域展現出廣泛的應用潛力。
 
@@ -286,37 +286,14 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
 
 \newpage
 
-\iffalse
-	\subsection{模擬平台與方法比較}
-	
-	\begin{itemize}
-	  \item \textbf{模擬平台比較}：
-	  為了模擬現實自主船舶在大範圍海域的搜救能力，本專案需一個能夠模擬大範圍海域、高擬真波浪、同時支援運行自主航行演算法的測試平台。主要平台比較如下：
-	  \begin{itemize}
-	    \item \textbf{Unity}：跨平台、視覺效果強、支援 Crest 波浪插件。但物理模擬精度稍差。適用於大規模海洋場景、波浪及執行群集航行策略演算法。
-	    \item \textbf{Gazebo}：與 ROS 深度整合、演算法測試方便。限制在大規模海洋場景支援有限，難以呈現複雜海況。
-	    \item \textbf{MORSE (Modular OpenRobots Simulation Engine)}：研究導向，支援機器人學術模擬與感測器模擬。限制為社群小、更新頻率低、擴充性較差，僅適合學術性演算法測試。
-	    \item \textbf{Webots}：教育與研究常用，內建機器人模型與控制介面。限制在大範圍海洋模擬上表現不足，適合小型場景。
-	  \end{itemize}
-	  
-	  \item \textbf{Unity 與 Crest 的優勢}：
-	  \begin{itemize}
-	    \item \textbf{真實感佳}：Crest 基於 FFT 波譜法生成海浪，模擬效果逼真。
-	    \item \textbf{即時渲染}：支援 GPU 加速，可進行大規模的波浪實時模擬。
-	    \item \textbf{無縫整合}：Crest 作為 Unity 插件，不需要額外轉換資料或外部軟體支援。
-	  \end{itemize}
-	  綜合比較：Unity + Crest 能夠同時滿足海洋擬真、模擬規模及自主船舶的控制測試需求，因此我們選擇其作為首選模擬環境。
-	\end{itemize} 
-\fi
-
 \subsection{代理人系統}
 
 \begin{itemize}
-  \item \textbf{單代理人系統（Single-Agent Systems, SAS）}：
+  \item \textbf{單代理人系統（Single-Agent Systems, SAS）}\cite{DiffAgent}：
   單代理人系統是指整個任務由一個代理人獨立完成。適用於任務範圍小、環境單純的情境，成本較低廉，但在大範圍及複雜環境下效率受限。
   
   \item \textbf{多代理人系統（Multi-Agent Systems, MAS）}：
-  MAS 由多個自主代理人組成，每個代理人能獨立運作，並透過協作、競爭等方式完成各自或共同的任務目標。常應用於大規模、分散且動態的環境。其訓練難度較高，主要挑戰包括：
+  MAS 由多個自主代理人組成，每個代理人能獨立運作，並透過協作、競爭等方式完成各自或共同的任務目標。常應用於大規模、分散且動態的環境\cite{MultiAgent}。其訓練難度較高，主要挑戰包括\cite{MultiChallenge}：
   \begin{itemize}
     \item \textbf{動態環境}：每個代理人在學習中會改變策略，導致環境不斷變化，不可預測且難以捉摸。
     \item \textbf{部分觀測與不確定性}：每個代理人只能感知局部環境資訊，需要推斷其他代理人的狀態及意圖。
@@ -658,7 +635,7 @@ $d_{\text{succ}}$ & 5，成功閾值 \\
 \end{figure}
 
 \subsection{模擬任務設計與測試方法}
-自主船舶在經過深度強化學習的訓練後，已經具備了導航能力與避障能力，這使船舶能夠執行更高層次的任務—搜尋與救援。我們在設計過程中選擇了最為直觀的方法—\textbf{平行線搜尋法}。這種方法透過多搜船舶同時沿著平行航線推進，在大範圍的區域內進行高覆蓋率的搜尋，以擴大搜尋範圍並降低遺漏目標的可能性。雖然在傳統上，平行線搜尋法相較其他搜尋方法需要更大量的人力與資源，但本實驗所提出的自主船舶系統能夠以更低的成本執行此策略，並利用群集間的偕同航行來擴大搜尋範圍。
+自主船舶在經過深度強化學習的訓練後，已經具備了導航能力與避障能力，這使船舶能夠執行更高層次的任務—搜尋與救援。我們在設計過程中選擇了最為直觀的方法—\textbf{平行線搜尋法}\cite{IAMSAR2008}。這種方法透過多搜船舶同時沿著平行航線推進，在大範圍的區域內進行高覆蓋率的搜尋，以擴大搜尋範圍並降低遺漏目標的可能性。雖然在傳統上，平行線搜尋法相較其他搜尋方法需要更大量的人力與資源，但本實驗所提出的自主船舶系統能夠以更低的成本執行此策略，並利用群集間的偕同航行來擴大搜尋範圍。
 
 \subsubsection{單一落水點快速救援}
 這個情景用來模擬單一人員落海的情況，例如郵輪乘客落海、近岸游泳者被離岸流捲走、或是小型漁船翻覆導致單人落水等情景。該情境強調時間的敏感性及位置的不確定性，船隊需要經過仔細的搜尋，在最快的時間內定位落水的人員，並進行施救，而系統需要根據當前的海流資料，預測人員的出現位置範圍，並引導船隊前去搜救。
@@ -882,95 +859,226 @@ $d_{\text{succ}}$ & 5，成功閾值 \\
 
 \begin{thebibliography}{9}
 
+\bibitem{KilicChallenge}
+Kilic, K. I., Maity, S., Sung, I., \& Nielsen, P. 
+(2025). 
+Challenges and AI-Driven Solutions in Maritime Search and Rescue Planning: A Comprehensive Literature Review. Marine Policy, 178(Article 106692). 
+\url{https://doi.org/10.1016/j.marpol.2025.106692}
+
+\bibitem{KilicRL}
+Kilic, K. I., Maity, S., Sung, I., \& Nielsen, P. 
+(2025). 
+A Reinforcement Learning-Assisted Search and Rescue Resource Allocation Decision-Making Approach for Maritime Emergencies" (2025). Computers \& Industrial Engineering, 201(Article 110933). 
+\url{https://doi.org/10.1016/j.cie.2025.110933}
+
+\bibitem{GroupMobile}
+Yang, T., Jiang, Z., Sun, R., Cheng, N., \& Feng, H.
+(2020). 
+Maritime Search and Rescue Based on Group Mobile Computing for Unmanned Aerial Vehicles and Unmanned Surface Vehicles. IEEE Transactions on Industrial Informatics, 16(12), 7700 – 7708. 
+\url{https://doi.org/10.1109/TII.2020.2974047}
+
+\bibitem{USCoastGuard}
+U.s. department of  homeland security united states  coast guard. 
+(2013). 
+U. S. COAST GUARD ADDENDUM TO THE UNITED STATES NATIONAL SEARCH AND RESCUE SUPPLEMENT (NSS) To The International Aeronautical and Maritime Search and Rescue Manual (IAMSAR).
+
+\bibitem{NOAA}
+Search and Rescue. 
+(n.d.). 
+NOAA-National Oceanic and Atmospheric Administration. 
+\url{https://www.sarsat.noaa.gov/search-and-rescue/}
+
+\bibitem{Survey}
+Li , J., Zhang, G., Jiang , C., \& Zhang , W. 
+(2023). 
+A Survey of Maritime Unmanned Search System: Theory, Applications and Future Directions. Ocean Engineering, 285(1), Article 115359. 
+\url{https://doi.org/10.1016/j.oceaneng.2023.115359}
+
 \bibitem{IAMSAR2008}
-IMO,
-``IAMSAR Manual Volume II: Mission Co-ordination,''
-\textit{International Maritime Organization},
-2008.
+IMO, \& ICAO. 
+(2008). 
+IAMSAR Manual Volume II: Mission Co-Ordination 2008 Edition.
 
 \bibitem{IAMSAR2016}
-IMO,
-``IAMSAR Manual Volume III: Mobile Facilities,''
-\textit{International Maritime Organization},
-2016.
+IMO, \& ICAO.  
+(2016). 
+IAMSAR Manual Volume III: Mobile Facilities 2016 Edition.
 
 \bibitem{Oways}
-Oways,
-``IAMSAR Search Patterns,''
-\textit{Oways Online},
-n.d.
-[Online]. Available: \url{https://owaysonline.com/iamsar-search-patterns/}
+Oways.
+(2024, August 23). 
+IAMSAR Search Patterns Explained with Sketches - Oways Online. 
+\url{https://owaysonline.com/iamsar-search-patterns/}
+
+\bibitem{MLAgentRepo}
+Maryamziaa. 
+(n.d.). 
+ml-agents [GitHub Repository]. GitHub. 
+\url{https://github.com/Unity-Technologies/ml-agents}
+
+\bibitem{CrestIntro}
+Introduction. 
+(n.d.). 
+Crest Ocean System. 
+\url{https://crest.readthedocs.io/en/stable/about/introduction.html}
+
+\bibitem{AiCoverage}
+Ai, B., Jia, M., Xu, H., Xu, J., Wen, Z., Li, B., \& Zhang, D. 
+(2021). 
+Coverage Path Planning for Maritime Search and Rescue Using Reinforcement Learning. 
+Ocean Engineering, Volume 241(Article 110098).
+\url{https://doi.org/10.1016/j.oceaneng.2021.110098}
+
+\bibitem{PathPlanning}
+Zhang, A., Wang , W., Bi , W., \& Huang, Z. 
+(2024). 
+A Path Planning Method Based on Deep Reinforcement Learning for AUV in Complex Marine Environment. Ocean Engineering, 313(1), Article 119354. 
+\url{https://doi.org/10.1016/j.oceaneng.2024.119354}
+
+\bibitem{EnhancedPathPlanning}
+Zhangahmad , J., \& Wahab, M. N. ab. 
+(2025). 
+Enhancing the Safety and Smoothness of Path Planning through an Integration of Dijkstra’s Algorithm and Piecewise Cubic Bezier Optimization. Expert Systems with Applications, 289(15), Article 128315. 
+\url{https://doi.org/10.1016/j.eswa.2025.128315}
+
+\bibitem{SimulationHeuristic}
+Ugwoke, K.C., Nnanna, N.A. \& Abdullahi, S.EY. 
+Simulation-based review of classical, heuristic, and metaheuristic path planning algorithms. Sci Rep 15, 12643 (2025). 
+\url{https://doi.org/10.1038/s41598-025-96614-2}
+
+\bibitem{Ennong}
+Ennong, T., Ye, L., Teng, M., Yulei, L., Yueming, L., \& Jian, C. 
+(2024). 
+Design and Experiment of a Sea-Air Heterogeneous Unmanned Collaborative System for Rapid Inspection Tasks at Sea. 
+Applied Ocean Research, 143(Article 103856). 
+\url{https://doi.org/10.1016/j.apor.2023.103856}
+
+\bibitem{Rolls}
+熊治民. 
+(2018, October 31). 
+自主航行船舶(無人船)發展趨勢. 經濟部產業技術司. 
+\url{https://www.moea.gov.tw/MNS/doit/industrytech/IndustryTech.aspx?menu_id=13545&it_id=202}
+
+\bibitem{Hyundai}
+周家仰. 
+(2023, June 5). 
+韓造船業者無人船建造 較原設定目標提前6年. 航貿周刊. 
+\url{https://shippingdigest.tw/news/20230605n1}
 
 \bibitem{autoboat}
-李孟諺
-"離岸風場運維無人船應用趨勢探討"
-\textit{經濟部產業技術司},
- [Online]. Available: \url{https://www.moea.gov.tw/MNS/doit/industrytech/IndustryTech.aspx?menu_id=13545&it_id=444}
+李孟諺. 
+(2022, October 15). 
+離岸風場運維無人船應用趨勢探討. 經濟部產業技術司. 
+\url{https://www.moea.gov.tw/MNS/doit/industrytech/IndustryTech.aspx?menu_id=13545&it_id=444}
 
 \bibitem{Yara}
-Yara international.
-"Yara Birkeland, Two Years On."
-[Online]. Available: \url{https://www.yara.com/knowledge-grows/yara-birkeland-two-years-on/}
+Yara Birkeland, Two Years On. 
+(2024, April 28). 
+Yara | Leader in Crop Nutrition, Ammonia and Industrial Solutions. 
+\url{https://www.yara.com/knowledge-grows/yara-birkeland-two-years-on/}
 
 \bibitem{Meguri}
-The Nippon Foundation
-"The Nippon Foundation MEGURI2040 Fully Autonomous Ship Program"
-[Online]. Available: \url{https://en.nippon-foundation.or.jp/what/projects/ocean/meguri2040}
+The Nippon Foundation MEGURI2040 Fully Autonomous Ship Program. 
+(n.d.). 
+The Nippon Foundation. 
+\url{https://en.nippon-foundation.or.jp/what/projects/ocean/meguri204}
+
+\bibitem{DiffAgent}
+How Do Multi-Agent Systems Differ from Single-Agent Systems? 
+(n.d.). 
+Milvus. 
+\url{https://milvus.io/ai-quick-reference/how-do-multiagent-systems-differ-from-singleagent-systems}
+
+\bibitem{MultiAgent}
+Gutowska, A. 
+(n.d.). 
+What Is a Multi-Agent System? IBM. 
+\url{https://www.ibm.com/think/topics/multiagent-system}
+
+\bibitem{MultiChallenge}
+Canese, L., Cardarilli, G. C., Di Nunzio, L., Fazzolari, R., Giardino, D., Re, M., \& Spanò, S. 
+(2021). 
+Multi-Agent Reinforcement Learning: A Review of Challenges and Applications. Applied Sciences, 11(11), 4948. 
+\url{https://doi.org/10.3390/app11114948}
 
 \bibitem{DQN}
-Zhang, H., Bai, F., Xiao, C., Gao, C., Xu, B., \& Müller, M. (n.d.).
-"β-DQN: Improving Deep Q-Learning By Evolving the Behavior"
-2025.
+zhang, H., Bai, F., Xiao, C., Gao, C., Xu, B., \& Müller, M. 
+(2025). 
+β-DQN: Improving Deep Q-Learning By Evolving the Behavior. 
+Proceedings of the 24th International Conference on Autonomous Agents and Multiagent Systems (AAMAS 2025), IFAAMAS, 2317–2319. 
+\url{https://dl.acm.org/doi/10.5555/3709347.3743872}
+
+\bibitem{DRL2018}
+李宏毅. 
+(n.d.). 
+Book\_李宏毅老師Deep Reinforcement Learning 2018課程筆記. HackMD. 
+\url{https://hackmd.io/@shaoeChen/Bywb8YLKS/https\%3A\%2F\%2Fhackmd.io\%2F\%40shaoeChen\%2FHkH2hSKuS}
+
+\bibitem{DRLAutonomous}
+Zhang, M., et al. 
+(2024). 
+Deep Reinforcement Learning in Autonomous Car Path Planning and Control: A Survey. 
+arXiv preprint arXiv:2404.00340v1.
+
+\bibitem{DRLBased}
+Chen, L., Jiang, Z., Cheng, L., Knoll, A. C., \& Zhou, M.
+ (2022). 
+Deep Reinforcement Learning Based Trajectory Planning Under Uncertain Constraints. Front. Neurorobot, 16. 
+\url{https://doi.org/10.3389/fnbot.2022.883562}
+
+\bibitem{PathPlanningMethod}
+Zhang , A., Wang, W., Bi, W., \& Huang, Z. 
+(2024). 
+A Path Planning Method Based on Deep Reinforcement Learning for AUV in Complex Marine Environment. Ocean Engineering, 313(1), Article 119354. 
+\url{https://doi.org/10.1016/j.oceaneng.2024.119354}
 
 \bibitem{SAC}
-晴晴\_Amanda
-"RL策略梯度方法之(十四):Soft Actor-Critic (SAC)"
-[Online]. Available: \url{https://blog.csdn.net/qq_38293297/article/details/108919306}
+晴晴\_amanda. 
+(2020, October 17). 
+RL策略梯度方法之(十四):Soft Actor-Critic (SAC). CSDN. 
+\url{https://blog.csdn.net/qq_38293297/article/details/108919306}
 
 \bibitem{rybchak2024}
-Z.~Rybchak and M.~Kopylets,
-``Comparative Analysis of DQN and PPO Algorithms in UAV Obstacle Avoidance 2D Simulation,''
-2024.
+Rybchak, Z., \& Kopylets, M.
+(2024). 
+Comparative Analysis of DQN and PPO Algorithms in UAV Obstacle Avoidance 2D Simulation. 
+CEUR Workshop Proceedings, 3688, 391–403. 
+\url{https://ceur-ws.org/Vol-3688/paper25.pdf}
 
 \bibitem{greenberg}
-V.~Greenberg and C.~Hernandez,
-``Autonomous Drone Navigation for First Response,''
-n.d.
+Greenberg, V., \& Hernandez, C. 
+(2024). 
+Autonomous Drone Navigation for First Response (CS224R final project report). Stanford University. 
+\url{https://cs224r.stanford.edu/projects/pdfs/CS224r__report.pdf}
 
 \bibitem{Drew2021}
-D.~S.~Drew,
-``Multi-Agent Systems for Search and Rescue Applications,''
-2021.
-
-\bibitem{Fan2023}
-范嘉軒,
-``虛實整合訓練框架：使用強化學習、Unity3D及ROS2的無人車自動導航,''
-2023.
+Drew, D. S. 
+(2021). 
+Multi-Agent Systems for Search and Rescue Applications. 
+Current Robotics Reports, Volume 2, 189–200. 
+\url{https://doi.org/10.1007/s43154-021-00048-3}
 
 \bibitem{Ericyangyu}
-Ericyangyu,
-``PPO-for-Beginners,''
-GitHub repository,
-n.d.
-[Online]. Available: \url{https://github.com/ericyangyu/PPO-for-Beginners}
+Ericyangyu. 
+(n.d.). 
+PPO-for-Beginners. [GitHub Repository]. GitHub. 
+\url{https://github.com/ericyangyu/PPO-for-Beginners}
 
 
 \bibitem{Idrees}
-Idreesshaikh,
-``Autonomous Driving in Carla Using Deep Reinforcement Learning,''
-GitHub repository,
-n.d.
-[Online]. Available: \url{https://github.com/idreesshaikh/Autonomous-Driving-in-Carla-using-Deep-Reinforcement-Learning?utm\_source=chatgpt.com}
+Hossain, J. 
+(n.d.). 
+Autonomous Driving with Deep Reinforcement Learning in CARLA Simulation. 
+ArXiv. 
+\url{https://doi.org/10.48550/arXiv.2306.11217}
 
 
 \bibitem{TimeLimits2017}
-``Time Limits in Reinforcement Learning,''
-2017.
-
-\bibitem{Leurent2019}
-Leurent,
-``Approximate Planning in POMDPs with Safe Reinforcement Learning,''
-2019.
+Pardo, F., Tavakoli, A., Levdik, V., \& Kormushev, P.
+(2018). 
+Time Limits in Reinforcement Learning. 
+Proceedings of the 35th International Conference on Machine Learning (ICML 2018), 80, 4045–4054. 
+\url{https://doi.org/10.48550/arXiv.2306.11217}
 
 \end{thebibliography}
 
