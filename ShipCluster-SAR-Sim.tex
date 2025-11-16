@@ -153,9 +153,9 @@
 本研究的目標在於建立一個「智慧化AI船舶群集搜救規劃系統」，具體目的如下：
 
 \begin{itemize}
-\item \textbf{建立高擬真模擬環境}：以 Unity 與 Crest 套件模擬真實海象與物理效果，作為測試平台。
 \item \textbf{開發自主搜救代理人}：利用深度強化學習演算法，訓練船舶於動態環境中進行自主導航與避障。
-\item \textbf{設計群集協同策略}：透過分區搜尋與任務分配，提升多船協同效率，避免重複與衝突。
+\item \textbf{設計群集搜尋系統}：設計一套系統，得以根據已知的資訊進行搜救規劃，並統籌無人船進行搜尋行動。
+\item \textbf{建立高擬真模擬環境}：以 Unity 與 Crest 套件模擬真實海象與物理效果，作為測試平台。
 \item \textbf{效能評估與驗證}：以模擬實驗檢驗系統在搜尋成功率、平均搜救時間與協同效率上的成效。
 \end{itemize}
 
@@ -184,8 +184,6 @@
 
 \subsection{結果討論}
 實驗結果顯示，本研究所建構的智慧化船舶群集搜救規劃系統能在動態海域環境中有效完成搜尋任務，得以在提高搜尋效率與覆蓋範圍的情況下，同時減少人力依賴並提升落海人員的獲救機率。  然而，本研究採用單代理訓練，尚未充分發揮多代理協作的潛在優勢。因此，未來研究可透過多代理強化學習、更多真實環境變因以及實地測試，進一步驗證系統效能並提升協作穩定性。
-
-
 
 \newpage
 
@@ -305,9 +303,24 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
 
 \paragraph{案例分析}
 \begin{itemize}
-  \item 無人車模擬環境中的 DQN 應用：一項研究探討了 DQN 在無人車模擬環境中的應用，特別是在安全、正常與激進駕駛模式下的表現。結果顯示，DQN 能夠有效學習並適應不同駕駛模式\cite{rybchak2024}。
+  \item DQN 與 PPO 演算法避障模擬之比較分析：一項研究探討 DQN 和 PPO 這兩種強化學習 (RL) 演算法，在 2D 模擬環境中引導無人機 (UAV) 避障的性能，最終發現在 2D 環境中，PPO 在所有指標上都明確超越 DQN。\cite{rybchak2024}。
   \item 無人機應急導航：斯坦福大學的研究團隊開發了一個基於 DQN 和 SAC 的無人機導航系統，用於應急情境中的快速部署與導航\cite{greenberg}。
 \end{itemize}
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{image/DQN\_PPO\_NavDemo.png}
+        \caption{DQN 與 PPO 在導航策略上差異示意圖\cite{rybchak2024}}
+    \end{minipage}%
+    \hspace{1cm}
+    \begin{minipage}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{image/AutoDroneDemo.png}
+        \caption{無人機應急導航，利用 OpenStreetMap 訓練，再利用 UE4 視覺化\cite{greenberg}}
+    \end{minipage}%
+\end{figure}
 
 \newpage
 
@@ -329,12 +342,12 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
 \subsection{文獻總結與研究方向}
 
 \begin{itemize}
-  \item \textbf{研究缺口}：缺乏針對「智慧化船舶群集」在海洋環境下進行搜救的模擬平台。
+  \item \textbf{研究缺口}：缺乏針對「智慧化船舶群集」在海洋環境下進行搜救的規劃系統平台。
   \item \textbf{本研究貢獻}：
   \begin{itemize}
     \item 建立結合 Unity 與 Crest 的海洋高擬真測試平台。
     \item 開發基於 SAC 的自主船舶代理人。
-    \item 提出可行的群集搜尋策略，並透過模擬驗證效能。
+    \item 製作出可行的搜救規劃系統，並透過模擬驗證效能。
   \end{itemize}
 \end{itemize}
 
@@ -368,44 +381,96 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
 \newpage
 
 \subsection{系統架構設計}
-本研究系統架構設計包含環境架構與感測器模擬設定，實驗流程分為兩個主要階段：「訓練階段」與「模擬測試階段」。
 
-\subsubsection{實驗架構設計}
-首先，在訓練階段中，系統將環境設置為訓練模式，並建立一個具備隨機障礙物與「殭屍船」的模擬場景。我們會使用單一代理人訓練的方式，透過深度強化學習進行訓練，學習導航與避障策略，以確保其能在複雜的海況下保持穩定航行並避免碰撞。
-\\ \par
-接著，在模擬測試階段，系統將環境切換為模擬模式，並於場景中部署多艘自主船舶，這些船舶均掛載前一階段所完成的訓練模型。在這個環境中，我們移除了「殭屍船」，並引入遇難者系統以生成需要救援的目標，搭配風浪與障礙物，重現真實的救援搜尋場景。船舶群集在此階段能同時執行搜救任務，展現協作與分工行為。於此過程中，系統持續記錄各項效能指標數據，以供後續統計與分析之用。
-\\ \par
-最後，為確保結果的穩定性與可靠性，本研究採取重複模擬的方式，於相同或不同環境條件下多次執行實驗，並蒐集大量數據進行比較與討論，從而驗證模型在實際應用中的可靠性與效能。
+本研究的系統採用前後端分離的設計架構。此架構分為兩大核心：
 
-\vspace*{4cm}
+\begin{itemize}
+    \item \textbf{前端操作介面 (Frontend)}：基於 React 框架開發，負責地圖視覺化、用戶操作指令的發送、以及即時模擬狀態的顯示。
+    \item \textbf{後端搜救規劃 (Backend)}：利用 Python 開發，負責獲取資料、規劃搜救及統籌海流資料。
+\end{itemize}
+
+兩者透過 API 服務層進行非同步通訊，前端以 100ms 的頻率輪詢後端狀態，並在用戶操作時發送指令，實現即時互動。
+
+\subsubsection{前端介面}
+
+前端系統負責所有的用戶互動與視覺化任務。如圖 \ref{fig:frontend_arch} 所示，其核心組件包含主應用程式、地圖模組、與控制面板，並透過 API 層與後端溝通。
+
 \begin{figure}[h]
     \centering
     \begin{minipage}[t]{1\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{image/TrainingArch.png}
-        \caption{實驗階段}
+        \includegraphics[width=\textwidth]{image/FrontendArch.png}
+        \caption{前端系統架構圖}
+        \label{fig:frontend_arch}
     \end{minipage}
 \end{figure}
 
-\newpage
+\paragraph{地圖視覺化 (Map Visualization)}
+\begin{itemize}
+    \item \textbf{地圖互動}：支援縮放、拖曳、點擊等操作。
+    \item \textbf{標記系統}：視覺化顯示船隻、遇險人員的即時位置，以及船隻的偵測範圍圈。
+\end{itemize}
 
-\subsubsection{環境系統架構}
+\paragraph{數據管理層 (State Management)}
+\begin{itemize}
+    \item \textbf{狀態管理}：統一管理船隻數據、遇險人員、航點等全域狀態。
+\end{itemize}
+
+\paragraph{API 服務層 (API Service)}
+提供與後端通信的介面：
+\begin{itemize}
+    \item \textbf{getStatus}：獲取系統即時狀態。
+    \item \textbf{reset}：發送重置模擬的指令。
+    \item \textbf{sendCommand}：發送船隻啟動/停止等指令。
+    \item \textbf{sendWaypoints}：發送用戶錄製的航點數據。
+\end{itemize}
+
+\paragraph{資料流 (Data Stream)}
+\begin{itemize}
+    \item \textbf{輪詢更新}：負責每 100ms 向後端請求更新前端狀態。
+\end{itemize}
+
+\paragraph{側邊選單 (Side Menu)}
+\begin{itemize}
+    \item \textbf{船隻控制}：控制船隻的狀態。
+    \item \textbf{航點錄製}：提供使用者自行選擇航點的功能，透過在地圖上面點選以設定航點。
+    \item \textbf{視角控制}：使地圖視角回正。
+\end{itemize}
+
+\subsubsection{前端介面展示}
+
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.381]{image/TrainingArchitecture.png}
-    \caption{訓練環境架構示意圖}
-    \label{fig:training_env}
-
-	\vspace*{0.3cm}
-
-    \includegraphics[scale=0.381]{image/SimulationArchitecture.png}
-    \caption{模擬救援環境架構示意圖}
-    \label{fig:simulation_env}
+    \begin{minipage}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{image/FrontendDemoAtDock.png}
+        \caption{船隻於港內等待}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{image/FrontendDemoDeparture.png}
+        \caption{船隻出發搜尋}
+    \end{minipage}%
 \end{figure}
 
-
+\subsubsection{後端系統}
 
 \newpage
+
+\subsection{環境架構}
+為了有效訓練及驗證本研究所提出的搜救系統，我們使用 Unity 建構了一個高擬真的模擬環境。本章節將詳細闡述此環境的架構設計。
+
+如圖 \ref{fig:env} 所示，整體架構被劃分為七大核心系統，各自負責專門的功能，並透過明確的資料介面協同運作。此架構以中央控制系統為頂層，往下管理船舶管理系統、波浪系統、障礙物、風力及遇難者等關鍵子系統。
+
+此外，資料輸出模組作為一個 API 平台，讓我們的系統能與模擬環境進行即時的資料交互。以下將詳細介紹各個模組的功能。
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.6]{image/EnvArchitecture.png}
+    \caption{環境架構示意圖}
+    \label{fig:env}
+\end{figure}
 
 \begin{itemize}
 	 \item \textbf{中央控制系統 (Central Control System)}
@@ -443,6 +508,11 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
 	\begin{itemize}
 	    \item \textbf{遇難者生成模擬器 (Victim Simulator)}：負責生成每次模擬中的遇難者。
 	\end{itemize}
+
+	\item \textbf{資料輸出 (Data Output)}
+	\begin{itemize}
+	   \item 為 HTTP API 平台，系統可透過其向環境發送請求，以改變船隻狀態或是取得資料。
+	\end{itemize}	
 	
 	 \item \textbf{系統與模組間的相互關係}
 	\begin{itemize}
@@ -454,8 +524,9 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
 
 \end{itemize}
 
-\subsection{強化學習架構}
+\newpage
 
+\subsection{無人船隻設計}
 \subsubsection{觀測空間設計}
 代理人的觀測空間包含四大類資訊：目的地資訊、船自身狀態、感測器資料以及其他船隻資訊。這些資訊能夠全面反映船隻的運動狀態、周遭環境以及目的地位置，使代理人在決策時具備充分的依據。
 
@@ -679,6 +750,63 @@ $d_{\text{succ}}$ & 5，成功閾值 \\
 \end{tabular}
 \end{minipage}
 \end{table}
+
+\newpage
+
+\subsubsection{搜尋判斷機制}
+為模擬真實搜救情境中的不確定性及因距離對能見度造成的影響，本系統的搜尋機制並非採用簡單的二元範圍觸發，而是導入了機率式的偵測模型。
+
+每艘自主船舶皆配有一個預定的搜救範圍。當遇難者進入此範圍內時，系統並不會立即將其標記為「已尋獲」。相反地，系統會在 \textbf{每一個模擬時間步}中，根據船隻與遇難者之間的 \textbf{即時距離}，重新計算一個「瞬時偵測成功率」。
+
+此機率是透過一個反比衰減函數（inverse decay function）來計算，其核心邏輯如您所提供的函式，可表示為以下方程式：
+
+$$ P_{\text{detect}} = \frac{1}{1 + (d / d_0)} $$
+
+其中：
+\begin{itemize}
+    \item $P_{\text{detect}}$：代表單一時間步內，偵測成功的機率。
+    \item $d$：船隻中心點與遇難者之間的當前距離（單位：公尺）。
+    \item $d_0$：基礎偵測距離參數，在本系統中設定為 \textbf{5.0}。
+\end{itemize}
+
+此公式的意義在於：
+\begin{itemize}
+    \item 當船隻與遇難者距離為 0 時，$d=0$，瞬時機率 $P_{\text{detect}} = 1.0$ (100\%)。
+    \item 當距離 $d$ 等於基礎參數 $d_0$（5 公尺）時，機率 $P_{\text{detect}} = 1 / (1 + 1) = 0.5$ (50\%)。
+    \item 隨著距離 $d$ 增加，瞬時偵測機率會下降，模擬出感測器在遠距離時的效能限制。
+\end{itemize}
+
+在模擬過程中，只要遇難者位於船隻的搜尋範圍內，系統便會持續在每一刻進行此機率判斷。遇難者被正式標記為「已尋獲」的事件，發生在\textbf{第一次}此判斷回傳為「成功」的時刻。這種設計能更真實地反映搜救作業：位於範圍邊緣的目標可能需要船隻多次掃過才能成功定位，而近距離的目標則會被迅速鎖定。
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{image/SearchingProb.png}
+        \caption{搜尋成功率函數圖形}
+    \end{minipage}
+\end{figure}
+
+\newpage
+
+\subsection{實驗架構設計}
+首先，在訓練階段中，系統將環境中的「遇難者系統」 關閉，並建立一個具備隨機障礙物與「殭屍船」的模擬場景。我們會使用單一代理人訓練的方式，透過深度強化學習進行訓練，學習導航與避障策略，以確保其能在複雜的海況下保持穩定航行並避免碰撞。
+\\ \par
+接著，在模擬測試階段，我們於場景中部署多艘自主船舶，這些船舶均掛載前一階段所完成的訓練模型。在這個階段中，我們移除了「殭屍船」，並引入遇難者系統以生成需要救援的目標，搭配風浪與障礙物，重現真實的救援搜尋場景。船舶群集在此階段能同時執行搜救任務，展現協作與分工行為。於此過程中，系統持續記錄各項效能指標數據，以供後續統計與分析之用。
+\\ \par
+最後，為確保結果的穩定性與可靠性，本研究採取重複模擬的方式，於相同或不同環境條件下多次執行實驗，並蒐集大量數據進行比較與討論，從而驗證模型在實際應用中的可靠性與效能。
+
+\vspace*{4cm}
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{1\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{image/TrainingArch.png}
+        \caption{實驗階段}
+    \end{minipage}
+\end{figure}
+
+\newpage
 
 \newpage
 
@@ -906,42 +1034,51 @@ $d_{\text{succ}}$ & 5，成功閾值 \\
 \begin{itemize}
 	\item \textbf{建立擬真測試平台}：本專案以 Unity 為主要的開發環境，並結合 Crest 海洋模擬套件，模擬真實風浪與海象。這個組合能夠支援大範圍的海洋場景，並兼顧視覺化與即時模擬的效能，非常適合用於實現海上搜救場景的模擬。
 	\item \textbf{開發自主搜救船隻}：使用 ML-Agents 與 DQN 演算法訓練出具備自主導航、避障能力的搜救船隻。
-	\item \textbf{設計群集協同策略}：針對多艘船舶進行協同搜尋與任務分配，提升搜救效率。
+	\item \textbf{設計搜救規劃系統}：設計一個系統，針對多艘船舶進行協同搜尋與任務的分配，以提升搜救效率。
 	\item \textbf{驗證可行性}：透過模擬測試驗證系統在不同搜救場景下的可行性。
 \end{itemize}
 
 \subsection{專題成果與限制}
 \subsubsection{專題成果}
-\paragraph{系統面成果} 本系統能應對單一落水事件及大範圍隨機落水的情境，並且可以根據風向及海流改變搜尋軌跡，進而搜尋到目標
-
-\paragraph{實驗或應用面成果} 單一落水快速救援的環境中，在系統的加持下救援成功率高達 82\%，並且成功預測了 81\% 的人員位置，相較於傳統人工搜救 50\% 的成功率，具有明顯的優勢。
-
-\paragraph{理論或方法面成果} 本研究在演算法與方法上，實現了基於環境感知的導航與避障策略，使船隊能在動態海域環境中自主調整路徑，避免碰撞並保持最佳搜尋覆蓋率。
-
-\paragraph{應用與價值} 本系統具備在大型船難、空難迫降或軍事與民用搜救等情境下的應用潛能。其低成本、高效率的搜尋方式，能減少人力依賴並提升救援成功率，對於提升整體搜救資源運用效率具有重要價值。未來若能結合真實感測數據與更複雜的環境建模，將有助於推動自主搜救技術在實務上的落地與推廣。
+\begin{itemize}
+	\item \textbf{系統面成果}：本系統能應對單一落水事件及大範圍隨機落水的情境，並且可以根據風向及海流改變搜尋軌跡，進而搜尋到目標
+	
+	\item \textbf{實驗或應用面成果}：單一落水快速救援的環境中，在系統的加持下救援成功率高達 82\%，並且成功預測了 81\% 的人員位置，相較於傳統人工搜救 50\% 的成功率，具有明顯的優勢。
+	
+	\item \textbf{理論或方法面成果}：本研究在演算法與方法上，實現了基於環境感知的導航與避障策略，使船隊能在動態海域環境中自主調整路徑，避免碰撞並保持最佳搜尋覆蓋率。
+	
+	\item \textbf{應用與價值}：本系統具備在大型船難、空難迫降或軍事與民用搜救等情境下的應用潛能。其低成本、高效率的搜尋方式，能減少人力依賴並提升救援成功率，對於提升整體搜救資源運用效率具有重要價值。未來若能結合真實感測數據與更複雜的環境建模，將有助於推動自主搜救技術在實務上的落地與推廣。
+\end{itemize}
 
 \subsubsection{研究限制}
-\paragraph{實驗設計限制} 由於本研究主要在模擬環境中進行，無法涵蓋真實海域中可能出現的各種不確定性，例如：雷擊等特殊情況。實驗中所設定的參數僅能代表部分典型情境，因此結果雖具參考價值，但仍需進一步實地驗證。  
+\begin{itemize}
+	\item \textbf{實驗設計限制}：由於本研究主要在模擬環境中進行，無法涵蓋真實海域中可能出現的各種不確定性，例如：雷擊等特殊情況。實驗中所設定的參數僅能代表部分典型情境，因此結果雖具參考價值，但仍需進一步實地驗證。  
 
-\paragraph{方法論限制} 在嘗試多代理訓練時，由於環境複雜或演算法設計限制，訓練過程往往難以收斂且穩定性較低。因此本研究採用單代理訓練方式，雖能在系統統籌下有效完成多代理搜尋任務，但因此缺少多代理協作所帶來的潛在優勢。這也是未來研究需要進一步探討的方向。
+	\item \textbf{方法論限制}：在嘗試多代理訓練時，由於環境複雜或演算法設計限制，訓練過程往往難以收斂且穩定性較低。因此本研究採用單代理訓練方式，雖能在系統統籌下有效完成多代理搜尋任務，但因此缺少多代理協作所帶來的潛在優勢。這也是未來研究需要進一步探討的方向。
 
 
-\paragraph{時間與資源限制}  受限於研究時間與資源，本研究無法取得實際的船舶設備或海上場域進行驗證，相關實驗僅止於模擬層面。
+	\item \textbf{時間與資源限制}：受限於研究時間與資源，本研究無法取得實際的船舶設備或海上場域進行驗證，相關實驗僅止於模擬層面。
+
+\end{itemize}
 
 \subsection{未來研究方向}
-\paragraph{多代理協作訓練}  引入多代理強化學習或協作演算法，提升船隊在複雜環境下的協作效率與搜尋成功率。針對多代理訓練難以收斂的問題，可探索分層控制、經驗共享或穩定化策略，改善訓練穩定性。
+\begin{itemize}
+	\item \textbf{多代理協作訓練}：引入多代理強化學習或協作演算法，提升船隊在複雜環境下的協作效率與搜尋成功率。針對多代理訓練難以收斂的問題，可探索分層控制、經驗共享或穩定化策略，改善訓練穩定性。
 
-\paragraph{更真實的環境} 優化模擬環境並加入更多變因，提升系統的真實性。
+	\item \textbf{更真實的環境}：優化模擬環境並加入更多變因，提升系統的真實性。
 
-\paragraph{更多搜尋策略} 加入更多搜尋策略，讓系統可以適應不同規模的任務性質及搜救任務，增加系統的應用範圍。
+	\item \textbf{更多搜尋策略}：加入更多搜尋策略，讓系統可以適應不同規模的任務性質及搜救任務，增加系統的應用範圍。
 
-\paragraph{連接到實體測試} 將系統應用在實際的水面上，結合實時風向、海流及各種感測數據進行搜救測試，驗證其可靠性。
+	\item \textbf{連接到實體測試}：將系統應用在實際的水面上，結合實時風向、海流及各種感測數據進行搜救測試，驗證其可靠性。
+\end{itemize}
+
 
 \subsection{可行的解決方案}
-\paragraph{多代理協作改進} 採用分層控制或經驗共享策略進行多代理訓練，可減少訓練不收斂的風險，提升船隊在動態環境下的協作效率。透過模擬不同海域與任務規模，逐步調整協作演算法，達成穩定且可擴展的多代理系統。
+\begin{itemize}
+	\item \textbf{多代理協作改進}：採用分層控制或經驗共享策略進行多代理訓練，可減少訓練不收斂的風險，提升船隊在動態環境下的協作效率。透過模擬不同海域與任務規模，逐步調整協作演算法，達成穩定且可擴展的多代理系統。
 
-\paragraph{環境模擬精度提升}  
-引入更精細的海流、風向以及潮汐資料，改善模擬精度，使系統在不同環境變化下能更準確地預測落水者位置。可使用歷史數據或即時資料進行校正，縮小模擬與現實的差距。
+	\item \textbf{環境模擬精度提升}：引入更精細的海流、風向以及潮汐資料，改善模擬精度，使系統在不同環境變化下能更準確地預測落水者位置。可使用歷史數據或即時資料進行校正，縮小模擬與現實的差距。
+\end{itemize}
 
 \newpage
 
