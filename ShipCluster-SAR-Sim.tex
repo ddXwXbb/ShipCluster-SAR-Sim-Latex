@@ -634,76 +634,7 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
 
 本研究所設計的強化學習獎勵系統，旨在引導船隻在模擬環境中安全且高效地到達目標位置。總獎勵 $R_t$ 由兩部分組成：持續獎勵 $R_{\text{cont}}$ 與終止情況的額外獎勵 $R_{\text{terminal}}$。其中，持續獎勵提供船隻行為的即時指導信號，而終止獎懲則針對明確事件給予強烈反饋。
 
-\paragraph{1. 持續獎勵}
-持續獎勵由三個子項組成：
-\begin{itemize}
-    \item \textbf{距離進展獎勵 (Distance Progress Reward)}：
-    \[
-    r_{\text{dist}} = R_D \cdot \tanh(3 \Delta d), \quad \Delta d = d_{t-1}-d_t
-    \]
-    \item \textbf{航向獎勵 (Heading Reward)}：
-    \[
-    r_{\text{head}} = R_H \cdot (f \cdot u)
-    \]
-    \item \textbf{障礙物懲罰 (Proximity Penalty)}：
-    \[
-    r_{\text{prox}} = R_P^{\max} \cdot \max\!\left(0, \frac{W - m_t}{W}\right)
-    \]
-\end{itemize}
-
-\paragraph{2. 終止情況的額外獎勵}
-\begin{itemize}
-    \item \textbf{成功到達目標 (Success Reward)}：
-    \[
-    R_{\text{succ}} + r_{\text{time}}, \quad
-    r_{\text{time}} = \max\!\left(0, \frac{T_{\max}-s}{T_{\max}}\right) R_{\text{tb}}^{\max}, \quad d_t<d_{\text{succ}}
-    \]
-    \item \textbf{碰撞 (Collision Penalty)}：
-    \[
-    R_{\text{col}}, \quad m_t < m_{\text{col}}
-    \]
-    \item \textbf{超時 (Timeout Penalty)}：
-    \[
-    R_{\text{to}}, \quad s > T_{\max}
-    \]
-\end{itemize}
-
-\paragraph{3. 總獎勵}
-每一步的總獎勵為：
-\[
-R_t = R_{\text{cont}} + R_{\text{terminal}}
-\]
-
-其中，持續獎勵為：
-\[
-R_{\text{cont}} = r_{\text{dist}} + r_{\text{head}} + r_{\text{prox}}
-\]
-
-終止情況的額外獎勵為：
-\[
-R_{\text{terminal}} =
-\begin{cases}
-R_{\text{col}}, & m_t < m_{\text{col}} \\
-R_{\text{succ}} + r_{\text{time}}, & d_t < d_{\text{succ}} \\
-R_{\text{to}}, & s > T_{\max} \\
-0, & \text{其他情況}
-\end{cases}
-\]
-
-綜合總獎勵公式：
-\[
-\begin{aligned}
-R_t &= R_D \tanh(3 \Delta d) + R_H (f \cdot u) + R_P^{\max} \max\!\Big(0,\frac{W-m_t}{W}\Big) \\
-&\quad +
-\begin{cases}
-R_{\text{col}}, & m_t < m_{\text{col}}\\
-R_{\text{succ}} + \displaystyle \max\!\Big(0,\frac{T_{\max}-s}{T_{\max}}\Big) R_{\text{tb}}^{\max}, & d_t < d_{\text{succ}}\\
-R_{\text{to}}, & s > T_{\max}\\
-0, & \text{otherwise}
-\end{cases}
-\end{aligned}
-\]
-
+\par
 \renewcommand{\arraystretch}{1.3} % 調整表格行距
 \begin{table}[h!]
 \centering
@@ -750,6 +681,82 @@ $d_{\text{succ}}$ & 5，成功閾值 \\
 \end{tabular}
 \end{minipage}
 \end{table}
+
+\paragraph{持續獎勵}
+持續獎勵由三個子項組成：
+\begin{itemize}
+    \item \textbf{距離進展獎勵 (Distance Progress Reward)}：
+    \[
+    r_{\text{dist}} = R_D \cdot \tanh(3 \Delta d), \quad \Delta d = d_{t-1}-d_t
+    \]
+船隻是否朝著目標前進，向目標靠近越多獎勵值越高，向目標遠離則反之。將獎勵值限制在 $[-R_D, R_D]$ 之間，避免單一步長中距離改變過大導致獎勵失控。
+    \item \textbf{航向獎勵 (Heading Reward)}：
+    \[
+    r_{\text{head}} = R_H \cdot (f \cdot u)
+    \]
+船隻是否面對著目標點，完全面對目標點獎勵最高，背離目標則反之。當船隻正對目標時為 $R_H$，背離目標時為 $-R_H$。
+    \item \textbf{障礙物懲罰 (Proximity Penalty)}：
+    \[
+    r_{\text{prox}} = R_P^{\max} \cdot \max\!\left(0, \frac{W - m_t}{W}\right)
+    \]
+當船隻與最近的障礙物距離 $m_t$ 小於警戒距離 $W$ 時，施加懲罰。
+\end{itemize}
+
+\paragraph{終止情況的額外獎勵}
+\begin{itemize}
+    \item \textbf{成功到達目標 (Success Reward)}：
+    \[
+    R_{\text{succ}} + r_{\text{time}}, \quad
+    r_{\text{time}} = \max\!\left(0, \frac{T_{\max}-s}{T_{\max}}\right) R_{\text{tb}}^{\max}, \quad d_t<d_{\text{succ}}
+    \]
+成功抵達目標時獲得基礎成功獎勵 $R_{\text{succ}}$，並加上時間獎勵 $r_{\text{time}}$，鼓勵船隻在更短的步數內完成任務。
+    \item \textbf{碰撞 (Collision Penalty)}：
+    \[
+    R_{\text{col}}, \quad m_t < m_{\text{col}}
+    \]
+船隻與障礙物的距離小於碰撞閾值 ($m_{\text{col}}$) 時，給予懲罰 $R_{\text{col}}$。
+    \item \textbf{超時 (Timeout Penalty)}：
+    \[
+    R_{\text{to}}, \quad s > T_{\max}
+    \]
+任務步數超過最大上限 ($T_{\max}$) 時，給予懲罰 $R_{\text{to}}$。
+\end{itemize}
+
+\paragraph{總獎勵}
+每一步的總獎勵為：
+\[
+R_t = R_{\text{cont}} + R_{\text{terminal}}
+\]
+
+其中，持續獎勵為：
+\[
+R_{\text{cont}} = r_{\text{dist}} + r_{\text{head}} + r_{\text{prox}}
+\]
+
+終止情況的額外獎勵為：
+\[
+R_{\text{terminal}} =
+\begin{cases}
+R_{\text{col}}, & m_t < m_{\text{col}} \\
+R_{\text{succ}} + r_{\text{time}}, & d_t < d_{\text{succ}} \\
+R_{\text{to}}, & s > T_{\max} \\
+0, & \text{其他情況}
+\end{cases}
+\]
+
+綜合總獎勵公式：
+\[
+\begin{aligned}
+R_t &= R_D \tanh(3 \Delta d) + R_H (f \cdot u) + R_P^{\max} \max\!\Big(0,\frac{W-m_t}{W}\Big) \\
+&\quad +
+\begin{cases}
+R_{\text{col}}, & m_t < m_{\text{col}}\\
+R_{\text{succ}} + \displaystyle \max\!\Big(0,\frac{T_{\max}-s}{T_{\max}}\Big) R_{\text{tb}}^{\max}, & d_t < d_{\text{succ}}\\
+R_{\text{to}}, & s > T_{\max}\\
+0, & \text{otherwise}
+\end{cases}
+\end{aligned}
+\]
 
 \newpage
 
