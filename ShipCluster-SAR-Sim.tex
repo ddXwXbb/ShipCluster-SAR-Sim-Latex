@@ -409,6 +409,8 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
 \begin{itemize}
     \item \textbf{地圖互動}：支援縮放、拖曳、點擊等操作。
     \item \textbf{標記系統}：視覺化顯示船隻、遇險人員的即時位置，以及船隻的偵測範圍圈。
+    \item \textbf{海流可視化}：以箭頭顯示海流方向與強度，並透過流動粒子動畫呈現海流動態。
+    \item \textbf{船隻軌跡}：記錄並顯示船隻的移動歷史路徑。
 \end{itemize}
 
 \paragraph{數據管理層 (State Management)}
@@ -423,6 +425,7 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
     \item \textbf{reset}：發送重置模擬的指令。
     \item \textbf{sendCommand}：發送船隻啟動/停止等指令。
     \item \textbf{sendWaypoints}：發送用戶錄製的航點數據。
+    \item \textbf{spawnPersons}：在指定位置設定待救者數量及範圍。
 \end{itemize}
 
 \paragraph{資料流 (Data Stream)}
@@ -432,9 +435,24 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
 
 \paragraph{側邊選單 (Side Menu)}
 \begin{itemize}
-    \item \textbf{船隻控制}：控制船隻的狀態。
+    \item \textbf{船隻控制}：控制船隻的啟動與停止狀態。
     \item \textbf{航點錄製}：提供使用者自行選擇航點的功能，透過在地圖上面點選以設定航點。
-    \item \textbf{視角控制}：使地圖視角回正。
+    \item \textbf{視角追蹤}：可選擇追蹤特定船隻或切換至全域視角。
+    \item \textbf{自動搜救}：按下後，系統會指派船隻出港，進行自主搜救。
+\end{itemize}
+
+\paragraph{船隻儀表板 (Boat Dashboard)}
+\begin{itemize}
+    \item \textbf{狀態}：個別船隻目前的等待狀態。
+    \item \textbf{經緯度}：個別船隻目前的經緯度。
+    \item \textbf{移動軌跡}：個別船隻的航行軌跡，可自主選擇要不要顯示。
+\end{itemize}
+
+\paragraph{迷你視窗 (Picture-in-Picture)}
+\begin{itemize}
+    \item \textbf{獨立視窗}：提供獨立的迷你地圖視窗，可同時監控不同區域。
+    \item \textbf{船隻追蹤}：可選擇追蹤特定船隻，視窗自動跟隨船隻移動。
+    \item \textbf{縮放控制}：可與大地圖不同、獨立的縮放控制。
 \end{itemize}
 
 \subsubsection{前端介面展示}
@@ -451,6 +469,36 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
         \centering
         \includegraphics[width=\textwidth]{image/FrontendDemoDeparture.png}
         \caption{船隻出發搜尋}
+    \end{minipage}%
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{image/FrontendDemoCurrent.png}
+        \caption{海流可視化展示}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{image/FrontendDemoPath.png}
+        \caption{船隻軌跡展示}
+    \end{minipage}%
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{image/FrontendDemoDashboard.png}
+        \caption{船隻儀表板介面}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{image/FrontendDemoPIP.png}
+        \caption{迷你視窗展示}
     \end{minipage}%
 \end{figure}
 
