@@ -15,6 +15,14 @@
 \usepackage{cite}
 \usepackage{fontspec}
 \usepackage{multirow}
+\usepackage{placeins}
+% Improve float placement tolerance so LaTeX can place more floats on the page
+\renewcommand{\topfraction}{0.95}
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\floatpagefraction}{0.90}
+\setcounter{topnumber}{5}
+\setcounter{bottomnumber}{5}
+\setcounter{totalnumber}{10}
 
 \setmainfont{Times New Roman}
 
@@ -116,13 +124,13 @@
 \hline
 \textbf{組員姓名} & \textbf{主要貢獻內容} & \textbf{貢獻比例} \\
 \hline
-黃品翰 & 海洋環境架設、進行訓練、訓練環境架設、模型配置設計與調教、具象化實驗結果、撰寫相關文件、整理實驗結果 & 25\% \\
+黃品翰 & 海洋環境架設、進行訓練、訓練環境架設、模型配置設計與調校、具象化實驗結果、撰寫相關文件、整理實驗結果 & 25\% \\
 \hline
 唐予安 & 撰寫相關文件、進行訓練、獎勵函數設計、訓練流程規劃、整理相關文獻 & 25\% \\
 \hline
 馮宥崴 & 調查海上搜救方法、整理相關文獻、海洋環境架設、搜救實驗規劃、撰寫相關文件、整理實驗結果 & 25\% \\
 \hline
-巫侑霖 & 系統架構規劃、核心模組程式碼實作、查閱技術文件、模型配置設計與調教、進行模型訓練、進行實驗& 25\% \\
+巫侑霖 & 系統架構規劃、核心模組程式碼實作、查閱技術文件、模型配置設計與調校、進行模型訓練、進行實驗& 25\% \\
 \hline
 \end{tabular}
 \end{table}
@@ -214,7 +222,7 @@
 	\end{itemize}
 \end{itemize}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
     \centering
     \begin{minipage}[t]{0.3\textwidth}
         \centering
@@ -307,7 +315,7 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
   \item 無人機應急導航：斯坦福大學的研究團隊開發了一個基於 DQN 和 SAC 的無人機導航系統，用於應急情境中的快速部署與導航\cite{greenberg}。
 \end{itemize}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
     \centering
     \begin{minipage}[t]{0.3\textwidth}
         \centering
@@ -367,9 +375,9 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
                   & GPU                              & RTX-4070            \\ \hline
 \multirow{6}{*}{軟體環境} 
                   & 作業系統 (OS)                    & Windows 11          \\
+	       & C\#  (.NET SDK)                      &9.0.300             \\
                   & Python                           & 3.10.11             \\
                   & Unity                            & 6000.0.39f1         \\
-                  & Unity DevOps Version Control     & 11.0                \\
                   & CUDA                             & 12.1                \\
                   & PyTorch                          & 2.2.1               \\ \hline
 \multirow{2}{*}{套件與框架} 
@@ -386,7 +394,7 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
 
 \begin{itemize}
     \item \textbf{前端操作介面 (Frontend)}：基於 React 框架開發，負責地圖視覺化、用戶操作指令的發送、以及即時模擬狀態的顯示。
-    \item \textbf{後端搜救規劃 (Backend)}：利用 Python 開發，負責獲取資料、規劃搜救及統籌海流資料。
+    \item \textbf{後端搜救規劃 (Backend)}：利用 C\#、Python 開發，負責獲取資料、規劃搜救及統籌海流資料。
 \end{itemize}
 
 兩者透過 API 服務層進行非同步通訊，前端以 100ms 的頻率輪詢後端狀態，並在用戶操作時發送指令，實現即時互動。
@@ -395,7 +403,7 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
 
 前端系統負責所有的用戶互動與視覺化任務。如圖 \ref{fig:frontend_arch} 所示，其核心組件包含主應用程式、地圖模組、與控制面板，並透過 API 層與後端溝通。
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
     \centering
     \begin{minipage}[t]{1\textwidth}
         \centering
@@ -455,9 +463,10 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
     \item \textbf{縮放控制}：可與大地圖不同、獨立的縮放控制。
 \end{itemize}
 
+\newpage
 \subsubsection{前端介面展示}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
     \centering
     \begin{minipage}[t]{0.48\textwidth}
         \centering
@@ -472,9 +481,9 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
     \end{minipage}%
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
     \centering
-    \begin{minipage}[t]{0.48\textwidth}
+    \begin{minipage}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{image/FrontendDemoCurrent.png}
         \caption{海流可視化展示}
@@ -487,9 +496,9 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
     \end{minipage}%
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
     \centering
-    \begin{minipage}[t]{0.48\textwidth}
+    \begin{minipage}[t]{0.4\textwidth}
         \centering
         \includegraphics[width=\textwidth]{image/FrontendDemoDashboard.png}
         \caption{船隻儀表板介面}
@@ -498,13 +507,14 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
     \begin{minipage}[t]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{image/FrontendDemoPIP.png}
-        \caption{迷你視窗展示}
+        \caption{監控視窗展示}
     \end{minipage}%
 \end{figure}
 
-\subsubsection{後端系統}
+%\subsubsection{後端系統}
 
-\newpage
+\FloatBarrier
+
 
 \subsection{環境架構}
 為了有效訓練及驗證本研究所提出的搜救系統，我們使用 Unity 建構了一個高擬真的模擬環境。本章節將詳細闡述此環境的架構設計。
@@ -513,7 +523,7 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
 
 此外，資料輸出模組作為一個 API 平台，讓我們的系統能與模擬環境進行即時的資料交互。以下將詳細介紹各個模組的功能。
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
     \centering
     \includegraphics[scale=0.6]{image/EnvArchitecture.png}
     \caption{環境架構示意圖}
@@ -601,7 +611,7 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
 
 \paragraph{4. 其他船隻資訊 (6m 維)}
 \begin{itemize}
-    \item 鄰近船隻狀態 (6m 維)：對每艘鄰近船隻記錄相對方位角正弦/餘弦、距離、航向角正弦/餘弦、徑向速度。
+    \item 鄰近船隻狀態 (6m 維)：環境中假設有鄰近的 m 艘船，對每艘鄰近船隻記錄相對方位角正弦/餘弦、距離、航向角正弦/餘弦、徑向速度。
 \end{itemize}
 
 \paragraph{5. 總結}
@@ -637,7 +647,7 @@ DRL 將強化學習（Reinforcement Learning, RL）的價值函數或策略函�
 
 \vspace*{0.5cm}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
     \centering
     \begin{minipage}[t]{1\textwidth}
         \centering
@@ -833,7 +843,7 @@ $$ P_{\text{detect}} = \frac{1}{1 + (d / d_0)} $$
 
 在模擬過程中，只要遇難者位於船隻的搜尋範圍內，系統便會持續在每一刻進行此機率判斷。遇難者被正式標記為「已尋獲」的事件，發生在\textbf{第一次}此判斷回傳為「成功」的時刻。這種設計能更真實地反映搜救作業：位於範圍邊緣的目標可能需要船隻多次掃過才能成功定位，而近距離的目標則會被迅速鎖定。
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
     \centering
     \begin{minipage}[t]{0.5\textwidth}
         \centering
@@ -1096,7 +1106,7 @@ $$ P_{\text{detect}} = \frac{1}{1 + (d / d_0)} $$
 \subsection{專題成果與限制}
 \subsubsection{專題成果}
 \begin{itemize}
-	\item \textbf{系統面成果}：本系統提供一個視覺化的平台，使搜救人員能直觀的使用無人船執行搜救任務。並且船隻可以根據風向及海流改變搜尋路徑，進而搜尋到目標。
+	\item \textbf{系統面成果}：本系統提供一個視覺化的平台，使搜救人員能直觀的使用無人船執行搜救任務，並且船隻可以根據風向及海流改變搜尋路徑，進而搜尋到目標。
 	
 	\item \textbf{實驗或應用面成果}：單一落水快速救援的環境中，在系統的加持下救援成功率高達 82\%，並且成功預測了 81\% 的人員位置，相較於傳統人工搜救 50\% 的成功率，具有明顯的優勢。
 	
